@@ -11,6 +11,7 @@
             <div class="card bg-white shadow-md rounded-lg mb-3 p-4">
                 <div class="card-body">
                     <h2 class="text-xl font-semibold">{{ $post->title }}</h2>
+                    <small> <span>@shortTime($post->created_at)</span></small>
                     <p class="text-gray-700">{{ $post->body }}</p>
                     <p class="text-gray-500">Category: {{ $post->category->name }}</p>
                     <p class="text-gray-500">Tags:
