@@ -8,6 +8,7 @@ use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class PostSeeder extends Seeder
 {
@@ -19,6 +20,8 @@ class PostSeeder extends Seeder
         $user = User::where('email', 'admin@a.com')->first();
         $category = Category::first();
 
+        // Create a post
+        DB::transaction(function () use ($user, $category) {
         $post = Post::create([
             'user_id' => $user->id,
             'title' => 'First Post',
@@ -28,5 +31,10 @@ class PostSeeder extends Seeder
 
         // Assign tags to the post
         $post->tags()->attach(Tag::all());
+        //  $post->tags()->attach($tags->pluck('id'));
+        });
+
+        $this->command->info('Post seeded successfully with tags.');
+    
     }
 }
