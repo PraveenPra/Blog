@@ -31,6 +31,49 @@
                             </form>
                         @endcan
                     </div>
+
+                    
+                    <div class="flex items-center mt-4 space-x-4">
+                        <span class="flex items-center space-x-1">
+                            <x-icons.like class="w-5 h-5 text-gray-500" />
+                            <span class="text-gray-500">123</span> <!-- Dummy likes count -->
+                        </span>
+                        <span class="flex items-center space-x-1">
+                            <x-icons.view class="w-5 h-5 text-gray-500" />
+                            <span class="text-gray-500">456</span> <!-- Dummy views count -->
+                        </span>
+                        <span class="flex items-center space-x-1 cursor-pointer" onclick="toggleComments({{ $post->id }})">
+                            <x-icons.comment class="w-5 h-5 text-gray-500" />
+                            <span class="text-gray-500">{{ $post->comments->count() }}</span> <!-- Number of comments -->
+                        </span>
+                    </div>
+
+                    <!-- Comments Section -->
+                    <div id="comments-section-{{ $post->id }}" class="hidden mt-4">
+                        <!-- New Comment Form -->
+                        @auth
+                            <form action="{{ route('posts.comments.store', $post) }}" method="POST" class="mb-4">
+                                @csrf
+                                <div class="flex items-center space-x-2">
+                                    <textarea name="body" class="w-full p-2 border border-gray-300 rounded" placeholder="Add a comment..."></textarea>
+                                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Comment</button>
+                                </div>
+                            </form>
+                        @endauth
+
+                        <!-- Comments List -->
+                        @foreach($post->comments as $comment)
+                            <div class="border-t border-gray-200 pt-2">
+                            <div class="flex items-center space-x-2">
+                                  <!-- Profile Picture -->
+                                  <img src="{{ $comment->user->photo ?? asset('default-profile.png') }}" class="w-10 h-10 rounded-full" alt="Profile Picture">
+                                  
+                                <p class="text-gray-700"><strong>{{ $comment->user->name }}</strong>  {{ $comment->created_at->diffForHumans() }}:</p>
+                                <p class="text-gray-600">{{ $comment->body }}</p>
+                            </div>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         @endforeach
@@ -38,5 +81,10 @@
             {{ $posts->links() }}
         </div>
     </div>
- 
+    <script>
+        function toggleComments(postId) {
+            const commentsSection = document.getElementById(`comments-section-${postId}`);
+            commentsSection.classList.toggle('hidden');
+        }
+    </script>
 </x-master-layout>
