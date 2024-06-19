@@ -2,7 +2,7 @@
     <div class="container mx-auto p-4">
         <h1 class="text-2xl font-bold mb-4">Edit Post</h1>
 
-        <form action="{{ route('posts.update', $post) }}" method="POST">
+        <form action="{{ route('posts.update', $post) }}" method="POST" id="edit-form">
             @csrf
             @method('PUT')
 
@@ -12,8 +12,11 @@
             </div>
 
             <div class="mb-4">
-                <label for="body" class="block text-gray-700">Body</label>
-                <textarea name="body" id="body" rows="5" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required>{{ $post->body }}</textarea>
+                <label for="editor" class="block text-gray-700">Body</label>
+                <div id="editor">
+                    {!! $post->body !!}
+                </div>
+                <textarea name="body" style="display:none;"></textarea>
             </div>
 
             <div class="mb-4">
@@ -39,4 +42,30 @@
             </div>
         </form>
     </div>
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js" defer></script>
+    <script>
+        var editor = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+                    [{size: []}],
+                    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                    [{'list': 'ordered'}, {'list': 'bullet'}, 
+                     {'indent': '-1'}, {'indent': '+1'}],
+                    ['link', 'image', 'video'],
+                    ['clean']                                         
+                ]
+            }
+        });
+
+        document.getElementById('edit-form').addEventListener('submit', function(e) {
+            var body = document.querySelector('textarea[name=body]');
+            body.value = editor.root.innerHTML;
+            // Uncomment for debugging to see if content is set correctly
+            console.log(body.value);
+            //e.preventDefault(); // Uncomment to prevent form submission for testing
+        });
+    </script>
 </x-master-layout>
