@@ -68,7 +68,9 @@
                                   <!-- Profile Picture -->
                                   <img src="{{ $comment->user->photo ?? asset('default-profile.png') }}" class="w-10 h-10 rounded-full" alt="Profile Picture">
                                   
-                                <p class="text-gray-700"><strong>{{ $comment->user->name }}</strong>  {{ $comment->created_at->diffForHumans() }}:</p>
+                                <p class="text-gray-700"><strong>{{ $comment->user->name }}</strong>  {{-- $comment->created_at->diffForHumans() --}}:
+                                    <small> <span>@shortTime($comment->created_at)</span></small>
+                                </p>
                                 <p class="text-gray-600">{{ $comment->body }}</p>
                             </div>
                             </div>
