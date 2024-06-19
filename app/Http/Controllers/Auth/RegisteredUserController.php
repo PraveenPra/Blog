@@ -45,6 +45,9 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+         // Assign role to the user upon registration
+         $user->assignRole('user'); // Assuming 'user' is the role name
+         
         return redirect(route('dashboard', absolute: false));
     }
 }
