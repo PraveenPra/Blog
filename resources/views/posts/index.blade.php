@@ -1,91 +1,92 @@
 <x-master-layout>
-    <div class="container mx-auto p-4">
-        <!-- Success Alert -->
-        @if(session('success'))
-            <div class="bg-green-200 border-green-600 border-l-4 text-green-900 p-4 mb-4" role="alert">
-                {{ session('success') }}
-            </div>
-        @endif
+    <style>
 
-        <!-- Error Alert -->
-        @if($errors->any())
-            <div class="bg-red-200 border-red-600 border-l-4 text-red-900 p-4 mb-4" role="alert">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+.card {
+    position: relative;
+    width: 320px;
+    height: 400px;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.imgBx {
+    position: relative;
+    width: 100%;
+    height: 240px;
+    background: #f00;
+    border-radius: 15px;
+    object-fit: contain;
+    /* background-size: cover; */
+    /* background-position: center; */
+    overflow: hidden;   
+}
+
+.content {
+    position: relative;
+    width: 100%;
+    /* height: 150px; */
+    background: #fff;
+    border-radius: 15px;
+    border-top-left-radius: 0;
+}
+
+.head {
+    position: absolute;
+    top: -50px;
+    height: 50px;
+    /* width: 50%; */
+    background: #fff;
+    /* color: #fff; */
+    border-top: 10px solid #f3f4f6;
+    border-right: 10px solid #f3f4f6;
+    border-top-right-radius: 25px;
+}
+
+.head::before {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: transparent;
+    border-radius: 50%;
+    box-shadow: -10px -10px 0 #f3f4f6;
+}
+
+.head::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: -25px;
+    width: 25px;
+    height: 25px;
+    background: transparent;
+    border-radius: 50%;
+    box-shadow: -10px 10px 0 #fff;
+}
+
+        
+    </style>
+    <div class="container mx-auto p-4">
+        <!-- Success and Error Alerts -->
+        @include('partials.alerts')
 
         <h1 class="text-2xl font-bold mb-4">Posts</h1>
+
+        <div class="flex justify-between items-center mb-4">
+            @can('create posts')
+                <a href="{{ route('posts.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded">Create Post</a>
+            @endcan
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             @foreach($posts as $post)
-                <div class="card bg-white shadow-md rounded-lg mb-3">
-                    <div class="relative overflow-hidden">
-                        @if($post->image)
-                            <img src="{{ asset('images/' . $post->image) }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
-                        @else
-                            <div class="h-64 bg-gray-200"></div>
-                        @endif
-                        <div class="absolute bottom-0 left-0 p-4 bg-white bg-opacity-75 w-full">
-                            <h2 class="text-xl font-semibold">{{ $post->title }}</h2>
-                            <small class="text-gray-600 block">@shortTime($post->created_at)</small>
-                            <p class="text-gray-700 my-4">@truncateText($post->body, 250)</p>
-                            <p class="text-gray-500">Category: {{ $post->category->name }}</p>
-                            <p class="text-gray-500">Tags:
-                                @foreach($post->tags as $tag)
-                                    <span class="badge bg-gray-200 text-gray-800 px-2 py-1 rounded">{{ $tag->name }}</span>
-                                @endforeach
-                            </p>
-                            <div class="flex items-center mt-4 space-x-4">
-                                <a href="{{ route('posts.show', $post) }}" class="btn bg-blue-500 text-white px-4 py-2 rounded">View</a>
-                                @can('edit own posts', $post)
-                                    <a href="{{ route('posts.edit', $post) }}" class="btn bg-yellow-500 text-white px-4 py-2 rounded">Edit</a>
-                                @endcan
-                                @can('delete own posts', $post)
-                                    <form action="{{ route('posts.destroy', $post) }}" method="POST" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn bg-red-500 text-white px-4 py-2 rounded">Delete</button>
-                                    </form>
-                                @endcan
-                                <span class="flex items-center space-x-1 cursor-pointer" onclick="toggleComments({{ $post->id }})">
-                                    <i class="fa-regular fa-comment-dots"></i>
-                                    <span class="text-gray-500 ml-2">{{ $post->comments->count() }}</span>
-                                </span>
-                            </div>
-
-                            <!-- Comments Section -->
-                            <div id="comments-section-{{ $post->id }}" class="hidden mt-4">
-                                <!-- New Comment Form -->
-                                @auth
-                                    <form action="{{ route('posts.comments.store', $post) }}" method="POST" class="mb-4">
-                                        @csrf
-                                        <div class="flex items-center space-x-2">
-                                            <textarea name="body" class="w-full p-2 border border-gray-300 rounded" placeholder="Add a comment..."></textarea>
-                                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Comment</button>
-                                        </div>
-                                    </form>
-                                @endauth
-
-                                <!-- Comments List -->
-                                @foreach($post->comments as $comment)
-                                    <div class="border-t border-gray-200 pt-2">
-                                        <div class="flex items-center space-x-2">
-                                            <img src="{{ $comment->user->photo ?? asset('default-profile.png') }}" class="w-10 h-10 rounded-full" alt="Profile Picture">
-                                            <p class="text-gray-700"><strong>{{ $comment->user->name }}</strong></p>
-                                            <small class="text-gray-600">@shortTime($comment->created_at)</small>
-                                            <p class="text-gray-600">{{ $comment->body }}</p>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <x-post-card :post="$post" />
             @endforeach
         </div>
+
+       
         <div class="mt-4">
             {{ $posts->links() }}
         </div>
