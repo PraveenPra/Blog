@@ -9,18 +9,18 @@
     <div class="content relative">
         <p class="head ">
         <br> 
-            <span class="p-4">
+            <span class="p-4 font-medium font-sans">
                 {{ $post->category->name }}</span>
         </p>
         <div class="p-4">
             <h2 class="text-xl font-semibold">{{$post->title}}</h2>
             <small class="text-gray-600 block">@shortTime($post->created_at)</small>
             @if(strlen($post->title) <= 50)
-                <p class="text-gray-700 my-2">@truncateText($post->body, 50)</p>
+                <!-- <p class="text-gray-700 my-2">@truncateText($post->body, 50)</p> -->
             @endif
-            <p class="text-gray-500">Tags:
+            <p class="text-gray-500">
                 @foreach($post->tags as $tag)
-                    <span class="badge bg-gray-200 text-gray-800 px-2 py-1 rounded">{{ $tag->name }}</span>
+                    <span class="badge bg-gray-200 text-xs text-gray-800 px-2 py-1 rounded">#{{ $tag->name }}</span>
                 @endforeach
             </p>
             <div class="flex items-center mt-4 space-x-4">
