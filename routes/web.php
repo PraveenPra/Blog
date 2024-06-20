@@ -29,7 +29,7 @@ Route::middleware(['auth'])->group(function () {
   Route::get('posts/search', [PostController::class, 'search'])->name('posts.search');
 
   // Route for filtering posts by category
-  Route::get('posts/category/{category}', [PostController::class, 'indexByCategory'])->name('posts.category');
+  Route::get('posts/category/{category}', [PostController::class, 'category'])->name('posts.category');
 
   // Route for filtering posts by tag
   Route::get('posts/tag/{tag}', [PostController::class, 'indexByTag'])->name('posts.tag');

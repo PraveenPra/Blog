@@ -47,23 +47,35 @@ class PostController extends Controller
                      ->paginate(10);
         
         $categories = Category::all(); // Retrieve categories
-        
-        return view('posts.index', compact('posts', 'categories'));
+        $tags = Tag::all();
+        return view('posts.index', compact('posts', 'categories', 'tags'));
 
         // return view('posts.index', compact('posts'));
     }
 
-    public function indexByCategory(Category $category)
-    {
-        $posts = $category->posts()->paginate(10);
-        return view('posts.index', compact('posts'));
-    }
+    // public function indexByCategory(Category $category)
+    // {
+    //     $posts = $category->posts()->paginate(10);
+    //     return view('posts.index', compact('posts'));
+    // }
 
     public function indexByTag(Tag $tag)
     {
-        $posts = $tag->posts()->paginate(10);
-        return view('posts.index', compact('posts'));
+        $posts = $tag->posts()->with(['category', 'tags', 'user'])->paginate(10);
+        $tags = Tag::all();
+        $categories = Category::all();
+        return view('posts.index', compact('posts', 'tags', 'categories'));
     }
+
+
+    //filter only by category
+    public function category(Category $category)
+{
+    $posts = $category->posts()->with(['category', 'tags', 'user'])->paginate(10);
+    $categories = Category::all(); // Retrieve categories
+    $tags = Tag::all();
+    return view('posts.index', compact('posts', 'categories', 'tags'));
+}
 
     /**
      * Show the form for creating a new resource.
