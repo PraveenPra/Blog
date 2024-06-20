@@ -25,7 +25,16 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('posts', PostController::class);
+  // Route for searching posts
+  Route::get('posts/search', [PostController::class, 'search'])->name('posts.search');
+
+  // Route for filtering posts by category
+  Route::get('posts/category/{category}', [PostController::class, 'indexByCategory'])->name('posts.category');
+
+  // Route for filtering posts by tag
+  Route::get('posts/tag/{tag}', [PostController::class, 'indexByTag'])->name('posts.tag');
+
+     Route::resource('posts', PostController::class);
     Route::resource('posts.comments', CommentController::class)->shallow();
 });
 
