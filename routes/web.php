@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\{ProfileController,
 
-    PostController,CommentController
+    PostController,CommentController,
+
+    CategoryController,TagController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -26,3 +28,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('posts', PostController::class);
     Route::resource('posts.comments', CommentController::class)->shallow();
 });
+
+Route::resource('categories', CategoryController::class)->middleware('role:admin');
+Route::resource('tags', TagController::class)->middleware('role:admin');
