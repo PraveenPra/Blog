@@ -129,13 +129,28 @@ class PostController extends Controller
             'body' => 'required|string',
             'category_id' => 'required|exists:categories,id',
             'tags' => 'array|exists:tags,id',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // 2MB max
+
         ]);
 
-        $post->update([
-            'title' => $validated['title'],
-            'body' => $validated['body'],
-            'category_id' => $validated['category_id'],
-        ]);
+        $imageName = $post->image; // Retain the old image by default
+
+        if ($request->hasFile('image')) {
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
+        }
+
+        $post->title = $validated['title'];
+        $post->body = $validated['body'];
+        $post->category_id = $validated['category_id'];
+        $post->image = $imageName;
+
+        $updated = $post->save();
+
+        if (!$updated) {
+            Log::error('Failed to update post.');
+            return back()->withInput()->withErrors(['error' => 'Failed to update post. Please try again.']);
+        }
 
         if (isset($validated['tags'])) {
             $post->tags()->sync($validated['tags']);

@@ -2,7 +2,7 @@
     <div class="container mx-auto p-4">
         <h1 class="text-2xl font-bold mb-4">Edit Post</h1>
 
-        <form action="{{ route('posts.update', $post) }}" method="POST" id="edit-form">
+        <form action="{{ route('posts.update', $post) }}" method="POST" enctype="multipart/form-data" id="edit-form">
             @csrf
             @method('PUT')
 
@@ -19,6 +19,25 @@
                 <textarea name="body" style="display:none;"></textarea>
             </div>
 
+
+            <div class="mb-4">
+                <label for="image" class="block text-gray-700">Image</label>
+                <input type="file" name="image" id="image" accept="image/*" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('image') border-red-500 @enderror">
+                @error('image')
+                    <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-4">
+                @if($post->image)
+                    <img src="{{ asset('images/' . $post->image) }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
+                @else
+                    <div class="h-64 bg-gray-200 flex items-center justify-center">
+                        <span class="text-gray-500">No Image Available</span>
+                    </div>
+                @endif
+            </div>
+            
             <div class="mb-4">
                 <label for="category_id" class="block text-gray-700">Category</label>
                 <select name="category_id" id="category_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
