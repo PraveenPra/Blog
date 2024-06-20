@@ -12,7 +12,7 @@
                 <div class="card-body">
                     <h2 class="text-xl font-semibold">{{ $post->title }}</h2>
                     <small> <span>@shortTime($post->created_at)</span></small>
-                    <p class="text-gray-700 my-4">{!! $post->body !!} <!-- Output post body as HTML --></p>
+                    <p class="text-gray-700 my-4">@truncateText(  $post->body, 250)<!-- Output post body as HTML --></p>
                     <p class="text-gray-500 my-2">Category: {{ $post->category->name }}</p>
                     <p class="text-gray-500">Tags:
                         @foreach($post->tags as $tag)

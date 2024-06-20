@@ -25,5 +25,9 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('shortTime', function ($expression) {
             return "<?php echo App\Traits\DateHelperTrait::formatShortTime($expression); ?>";
         });
+        Blade::directive('truncateText', function ($expression) {
+            list($text, $length) = explode(',', $expression);
+            return "<?php echo \App\Traits\TextTruncatorTrait::truncateText($text, $length); ?>";
+        });
     }
 }
