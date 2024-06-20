@@ -35,7 +35,8 @@ class PostController extends Controller
        
         $posts = Post::with(['category', 'tags', 'user'])->paginate(10);
         $categories = Category::all(); // Fetch categories
-        return view('posts.index', compact('posts', 'categories'));
+        $tags = Tag::all();
+        return view('posts.index', compact('posts', 'categories', 'tags'));
     }
 
     public function search(Request $request)

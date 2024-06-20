@@ -70,12 +70,12 @@
     </style>
 
 <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight ">
             {{ __('Posts') }}
         </h2>
 
              <!-- Search Form -->
-     <form action="{{ route('posts.search') }}" method="GET" class="mb-4 float-right">
+     <form action="{{ route('posts.search') }}" method="GET" class="mb-8 float-right">
             <div class="flex items-center">
                 <input type="text" name="search" class="px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Search posts...">
                 <button type="submit" class="ml-2 bg-blue-500 text-white px-4 py-2 rounded">Search</button>
@@ -86,20 +86,25 @@
 
 
         <!-- Categories Filter Section -->
-        <div class="mb-4">
-          
+        <div class="my-4">
+        <a href="{{ route('posts.index') }}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded mr-2"> All</a>
+
             @foreach ($categories as $category)
-                <a href="{{ route('posts.category', $category) }}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded mr-2">{{ $category->name }}</a>
+                <a href="{{ route('posts.category', $category) }}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded mr-2
+                 {{ request()->is('posts/category/'.$category->id) ? 'bg-green-500 text-white' : '' }}">{{ $category->name }}</a>
             @endforeach
         </div>
           <!-- Tags Filter Section -->
     <div class="mb-4">
         
-        <ul>
+       
+        <a href="{{ route('posts.index') }}" class="border-2 border-gray-500 text-gray-700 px-4 py-2 rounded mr-2 font-thin text-xs"> All</a>
+
             @foreach($tags as $tag)
-            <a href="{{ route('posts.tag', $tag) }}" class="border-2 border-gray-500 text-gray-700 px-4 py-2 rounded mr-2 font-thin text-xs">#{{ $tag->name }}</a>
+            <a href="{{ route('posts.tag', $tag) }}" class="border-2 border-gray-500 text-gray-700 px-4 py-2 rounded mr-2 font-thin text-xs
+             {{ request()->is('posts/tag/'.$tag->id) ? 'border-green-500 text-green-500' : '' }}">#{{ $tag->name }}</a>
             @endforeach
-        </ul>
+  
     </div>
         
     <div class="container mx-auto p-4">
