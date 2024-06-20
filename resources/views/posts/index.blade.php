@@ -34,18 +34,21 @@
                     </div>
 
                     
-                    <div class="flex items-center mt-4 space-x-4">
+                    <div class="flex items-center mt-4 space-x-4 gap-4">
                         <span class="flex items-center space-x-1">
-                            <x-icons.like class="w-5 h-5 text-gray-500" />
-                            <span class="text-gray-500">123</span> <!-- Dummy likes count -->
+                            <!-- <x-icons.like class="w-5 h-5 text-gray-500" /> -->
+                            <i class="fa-regular fa-heart"></i>
+                            <span class="text-gray-500 ml-2">123</span> <!-- Dummy likes count -->
                         </span>
                         <span class="flex items-center space-x-1">
-                            <x-icons.view class="w-5 h-5 text-gray-500" />
-                            <span class="text-gray-500">456</span> <!-- Dummy views count -->
+                            <!-- <x-icons.view class="w-5 h-5 text-gray-500" /> -->
+                            <i class="fa-regular fa-eye"></i>
+                            <span class="text-gray-500 ml-2">456</span> <!-- Dummy views count -->
                         </span>
                         <span class="flex items-center space-x-1 cursor-pointer" onclick="toggleComments({{ $post->id }})">
-                            <x-icons.comment class="w-5 h-5 text-gray-500" />
-                            <span class="text-gray-500">{{ $post->comments->count() }}</span> <!-- Number of comments -->
+                            <!-- <x-icons.comment class="w-5 h-5 text-gray-500" /> -->
+                            <i class="fa-regular fa-comment-dots"></i>
+                            <span class="text-gray-500 ml-2">{{ $post->comments->count() }}</span> <!-- Number of comments -->
                         </span>
                     </div>
 
