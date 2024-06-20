@@ -68,11 +68,18 @@
 
         
     </style>
+
+<x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Posts') }}
+        </h2>
+    </x-slot>
+
     <div class="container mx-auto p-4">
         <!-- Success and Error Alerts -->
         @include('partials.alerts')
 
-        <h1 class="text-2xl font-bold mb-4">Posts</h1>
+        <!-- <h1 class="text-2xl font-bold mb-4">Posts</h1> -->
 
         <div class="flex justify-between items-center mb-4">
             @can('create posts')

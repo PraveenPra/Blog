@@ -4,7 +4,7 @@ use App\Http\Controllers\{ProfileController,
 
     PostController,CommentController,
 
-    CategoryController,TagController,
+    CategoryController,TagController,UserController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -31,3 +31,4 @@ Route::middleware(['auth'])->group(function () {
 
 Route::resource('categories', CategoryController::class)->middleware('role:admin');
 Route::resource('tags', TagController::class)->middleware('role:admin');
+Route::resource('users', UserController::class);
