@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "user_id": 1,
+        "title": "First Post",
+        "body": "<p><span style=\"background-color: rgb(255, 255, 0);\">This is the bod</span>y of the <span style=\"color: rgb(230, 0, 0);\">first </span><strong><u>post</u></strong>.</p>",
+        "category_id": 1,
+        "created_at": "2024-06-19T11:41:00.000000Z",
+        "updated_at": "2024-06-19T20:26:49.000000Z"
+    },
+    {
+        "id": 2,
+        "user_id": 1,
+        "title": "Blade directives",
+        "body": "<p>To use the formatShortTime method directly in your Blade templates for all comments, you can create a custom Blade directive. This directive will allow you to pass a date/time string or a Carbon instance directly to it and display the formatted short time directly in your views. Here\u2019s how you can implement it:</p><p><br></p><p><strong>Step 1:</strong> Create a Blade Directive Create a Blade directive: Blade directives allow you to define custom PHP functions that are accessible in your Blade templates.</p><p><br></p><p><u>php code</u></p><p><br></p><p>// In your AppServiceProvider or a dedicated service provider for directives</p><p>namespace App\\Providers;</p><p>use Illuminate\\Support\\Facades\\Blade;</p><p>use Illuminate\\Support\\ServiceProvider;</p><p>use App\\Traits\\DateHelperTrait;</p><p><br></p><p>class AppServiceProvider extends ServiceProvider</p><p>{</p><p> public function boot() { </p><p>Blade::directive('shortTime', function ($expression) { </p><p>return \"\";</p><p> }); </p><p>} </p><p>}</p><p><br></p><p><strong> Step 2: </strong>Usage in Blade Templates Use the directive in your Blade templates: Once the directive is registered, you can use it anywhere in your Blade files to format dates. </p><p><br></p><p><u>blade code</u></p><p><br></p><p> @foreach ($comments as $comment)</p><p><img src=\"{{ $comment->user->profile_picture }}\" alt=\"Profile Picture\">{{ $comment-&gt;content }}</p><p>Posted @shortTime($comment-&gt;created_at)</p><p>@endforeach </p><p><br></p><p><u>Explanation: </u>Blade Directive Registration: In the boot method of your AppServiceProvider, you register a Blade directive @shortTime that takes an expression (typically a date or a Carbon instance) and calls the formatShortTime method from your DateHelperTrait. </p><p><br></p><p><u>Directive Usage:</u> In your Blade template (comments.blade.php in this example), you can now use @shortTime($comment-&gt;created_at) directly to display the formatted short time for each comment's creation date. Benefits: Direct Usage: Simplifies the display of formatted dates in Blade templates without needing to pass formatted dates from controllers.</p><p><br></p><p><u>Consistency</u>: Ensures that all date formatting follows the same logic across your application. </p><p><br></p><p><u>Flexibility</u>: Allows you to easily adjust the formatting logic by modifying the formatShortTime method in the DateHelperTrait as per your requirements. By implementing this approach, you enhance the readability and maintainability of your Blade templates while ensuring consistent and user-friendly date/time formatting for comments and other entities in your application. Adjust the directive and method as needed to accommodate any additional formatting requirements or preferences you may have.</p>",
+        "category_id": 1,
+        "created_at": "2024-06-19T19:12:10.000000Z",
+        "updated_at": "2024-06-19T20:14:13.000000Z"
+    }
+]

@@ -51,7 +51,8 @@ class PostController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {dd($request->all());
+    {
+        // dd($request->all());
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'body' => 'required|string',

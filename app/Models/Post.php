@@ -11,6 +11,8 @@ class Post extends Model
 
     protected $fillable = [
         'title', 'body', 'category_id', 'user_id',
+        //for mass assignment
+         'created_at', 'updated_at'
     ];
 
     public function user()
