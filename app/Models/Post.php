@@ -10,7 +10,7 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'body', 'category_id', 'user_id',
+        'title', 'body', 'category_id', 'user_id', 'image',
         //for mass assignment
          'created_at', 'updated_at'
     ];

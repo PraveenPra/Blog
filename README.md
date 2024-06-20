@@ -7,6 +7,17 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## SETUP
+clone the repo and run :
+composer install
+php artisan migrate --seed
+php artisan serve
+
+- [Dev env -] 
+To backup and restore posts run:
+php artisan export:posts
+This will create a json file with posts data in seeders folder
+Then u can do the changes and migrate and seed again (use ManualPostsSeeder)
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

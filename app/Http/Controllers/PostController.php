@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller 
 {
@@ -58,14 +59,30 @@ class PostController extends Controller
             'body' => 'required|string',
             'category_id' => 'required|exists:categories,id',
             'tags' => 'array|exists:tags,id',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // 2MB max
+
         ]);
+
+        $imageName = null;
+
+        if ($request->hasFile('image')) {
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
+        }
 
         $post = Post::create([
             'title' => $validated['title'],
             'body' => $validated['body'],
             'category_id' => $validated['category_id'],
             'user_id' => Auth::id(),
+            'image' => $imageName,
         ]);
+
+        if (!$post) {
+            // Handle failure scenario
+            Log::error('Failed to create post.');
+            return back()->withInput()->withErrors(['error' => 'Failed to create post. Please try again.']);
+        }
 
         if (isset($validated['tags'])) {
             $post->tags()->attach($validated['tags']);
