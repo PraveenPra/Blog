@@ -93,15 +93,21 @@ class PostController extends Controller
             'body' => 'required|string',
             'category_id' => 'required|exists:categories,id',
             'tags' => 'array|exists:tags,id',
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // 2MB max
-
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // 2MB max
+            'image_url' => 'nullable|url',
         ]);
 
         $imageName = null;
 
+        // Handle image upload if provided
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->extension();
             $request->image->move(public_path('images'), $imageName);
+        }
+
+        // If image URL is provided and image was not uploaded, use the URL
+        if ($request->filled('image_url') && !$imageName) {
+            $imageName = $request->image_url; // Store URL directly
         }
 
         $post = Post::create([
@@ -191,7 +197,7 @@ class PostController extends Controller
             $post->image = $request->image_url; // Store URL directly in image field
         }
 
-        
+
         $post->title = $validated['title'];
         $post->body = $validated['body'];
         $post->category_id = $validated['category_id'];
