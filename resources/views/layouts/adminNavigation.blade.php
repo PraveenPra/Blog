@@ -18,15 +18,19 @@
                     </x-nav-link>
 
                     <!-- Categories Link -->
+                     @can('view categories')
                     <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.index')">
                         {{ __('Categories') }}
                     </x-nav-link>
+                    @endcan
 
                     <!-- Tags Link -->
+                     @can('view tags')
                     <x-nav-link :href="route('tags.index')" :active="request()->routeIs('tags.index')">
                         {{ __('Tags') }}
                     </x-nav-link>
-
+                    @endcan
+                    
                     <!-- Posts Link -->
                     <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index')">
                         {{ __('Posts') }}
@@ -37,9 +41,11 @@
                         {{ __('Users') }}
                     </x-nav-link>
 
+                    @can('view roles')
                     <x-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.index')">
                         {{ __('Roles') }}
                     </x-nav-link>
+                    @endcan
 
                     <x-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.index')">
                         {{ __('Permissions') }}
