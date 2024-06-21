@@ -35,33 +35,12 @@
                         <button type="submit" class="btn bg-red-500 text-white px-4 py-2 rounded">Delete</button>
                     </form>
                 @endcan
-                <span class="flex items-center space-x-1 cursor-pointer" onclick="toggleComments({{ $post->id }})">
+                <span class="flex items-center space-x-1 cursor-pointer" >
                     <i class="fa-regular fa-comment-dots"></i>
-                    <span class="text-gray-500 ml-2">{{ $post->comments->count() }}</span>
+                    <a href="{{ route('posts.show', $post) }}" class="text-gray-500 ml-2">{{ $post->comments->count() }}</a>
                 </span>
             </div>
         </div>
-        <!-- Comments Section -->
-        <div id="comments-section-{{ $post->id }}" class="hidden mt-4">
-            @auth
-                <form action="{{ route('posts.comments.store', $post) }}" method="POST" class="mb-4">
-                    @csrf
-                    <div class="flex items-center space-x-2">
-                        <textarea name="body" class="w-full p-2 border border-gray-300 rounded" placeholder="Add a comment..."></textarea>
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Comment</button>
-                    </div>
-                </form>
-            @endauth
-            @foreach($post->comments as $comment)
-                <div class="border-t border-gray-200 pt-2">
-                    <div class="flex items-center space-x-2">
-                        <img src="{{ $comment->user->photo ?? asset('default-profile.png') }}" class="w-10 h-10 rounded-full" alt="Profile Picture">
-                        <p class="text-gray-700"><strong>{{ $comment->user->name }}</strong></p>
-                        <small class="text-gray-600">@shortTime($comment->created_at)</small>
-                        <p class="text-gray-600">{{ $comment->body }}</p>
-                    </div>
-                </div>
-            @endforeach
-        </div>
+       
     </div>
 </div>

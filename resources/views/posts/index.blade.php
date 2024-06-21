@@ -131,10 +131,5 @@
         </div>
     </div>
 
-    <script>
-        function toggleComments(postId) {
-            const commentsSection = document.getElementById(`comments-section-${postId}`);
-            commentsSection.classList.toggle('hidden');
-        }
-    </script>
+  
 </x-master-layout>
