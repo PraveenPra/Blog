@@ -45,7 +45,7 @@
             @endisset
 
             <!-- Page Content -->
-            <main class="container mx-auto ">
+            <main class="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
                 {{ $slot ?? ''}}
             </main>
         </div>
