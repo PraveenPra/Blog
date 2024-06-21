@@ -41,12 +41,22 @@ Route::middleware(['auth'])->group(function () {
     // Route for filtering posts by tag
     Route::get('posts/tag/{tag}', [PostController::class, 'indexByTag'])->name('posts.tag');
 
+
+
+Route::post('users/{user}/follow', [UserController::class, 'follow'])->name('follow.user');
+Route::post('posts/{post}/save', [PostController::class, 'savePost'])->name('posts.save');
+Route::post('posts/{post}/unsave', [PostController::class, 'unsavePost'])->name('posts.unsave');
+Route::get('posts/saved', [PostController::class, 'mySavedPosts'])->name('posts.saved');
+Route::get('posts/followed', [PostController::class, 'followedUsersPosts'])->name('posts.followed');
+
     Route::resource('posts', PostController::class)->except(['index', 'show']);;
     Route::resource('posts.comments', CommentController::class)->shallow()->except(['index', 'show']);
 
     Route::resource('categories', CategoryController::class)->middleware('role:admin');
     Route::resource('tags', TagController::class)->middleware('role:admin');
     Route::resource('users', UserController::class);
+
+    
 });
 
 

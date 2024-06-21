@@ -208,4 +208,32 @@ class PostController extends Controller
         return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
    
     }
+
+    public function savePost(Post $post)
+    {
+        Auth::user()->savedPosts()->attach($post);
+        return back()->with('success', 'Post saved successfully.');
+    }
+    
+    public function unsavePost(Post $post)
+    {
+        Auth::user()->savedPosts()->detach($post);
+        return back()->with('success', 'Post unsaved successfully.');
+    }
+    
+
+public function mySavedPosts()
+{
+    $savedPosts = Auth::user()->savedPosts;
+    return view('posts.saved', compact('savedPosts'));
+}
+
+public function followedUsersPosts()
+{
+    $followedUsers = Auth::user()->follows()->pluck('followed_id');
+    $posts = Post::whereIn('user_id', $followedUsers)->get();
+    return view('posts.followed', compact('posts'));
+}
+
+
 }

@@ -57,4 +57,45 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function follow(User $user)
+{
+    $this->follows()->attach($user->id);
+}
+
+public function unfollow(User $user)
+{
+    $this->follows()->detach($user->id);
+}
+
+public function isFollowing(User $user)
+{
+    return $this->follows()->where('followed_id', $user->id)->exists();
+}
+
+public function follows()
+{
+    return $this->belongsToMany(User::class, 'user_follows', 'follower_id', 'followed_id')->withTimestamps();
+}
+
+public function savePost(Post $post)
+{
+    $this->savedPosts()->attach($post->id);
+}
+
+public function unsave(Post $post)
+{
+    $this->savedPosts()->detach($post->id);
+}
+
+public function hasSaved(Post $post)
+{
+    return $this->savedPosts()->where('post_id', $post->id)->exists();
+}
+
+public function savedPosts()
+{
+    return $this->belongsToMany(Post::class, 'user_saved_posts', 'user_id', 'post_id')->withTimestamps();
+}
+
 }

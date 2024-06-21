@@ -56,6 +56,15 @@
                         {{ __('Permissions') }}
                     </x-nav-link>
                     @endcan
+
+                    <x-nav-link :href="route('posts.followed')" :active="request()->routeIs('posts.followed')">
+                        {{ __('Following') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('posts.saved')" :active="request()->routeIs('posts.saved')">
+                        {{ __('Saved') }}
+                    </x-nav-link>
+                  
                 </div>
             </div>
 
