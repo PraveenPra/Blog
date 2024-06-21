@@ -12,12 +12,6 @@ use Illuminate\Support\Facades\Log;
 class PostController extends Controller 
 {
 
-    //  function __construct()
-    // {
-    //     $this->middleware('permission:create posts', ['only' => ['create', 'store']]);
-    //     $this->middleware('permission:edit own posts|edit posts',['only'=>['edit', 'update']]);
-    //     $this->middleware('permission:delete own posts|delete posts',['only'=>['destroy']]);
-    // }
 
     public static function middleware(): array
     {
