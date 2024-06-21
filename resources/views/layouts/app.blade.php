@@ -5,7 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'BlogHub') }}</title>
+   <!-- Dynamic Title -->
+   <!-- <title>@yield('title', 'Your Default Title')</title> -->
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -13,6 +15,17 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        
+        <!-- favicon -->
+        <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/png">
+
+
+         <!-- SEO Meta Tags -->
+    <meta name="description" content="{{ $metaDescription ?? 'Explore insightful posts on various topics.' }}">
+    <meta name="keywords" content="{{ $metaKeywords ?? 'technology, laravel, php, web development' }}">
+    <meta name="author" content="{{ $metaAuthor ?? 'Manikanta' }}">
+
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">

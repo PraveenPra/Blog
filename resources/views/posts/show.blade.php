@@ -1,4 +1,12 @@
 <x-master-layout>
+
+<x-seo-meta
+        :title="$post->title"
+        :metaDescription="Str::limit($post->body, 150)"
+        :metaKeywords="implode(', ', $post->tags->pluck('name')->toArray())"
+        :metaAuthor="$post->user->name"
+    />
+    
     <div class="container mx-auto p-4">
         <div class="mb-3 p-4">
             <div class="flex justify-between items-center">
