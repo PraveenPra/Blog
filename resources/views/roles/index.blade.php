@@ -14,6 +14,8 @@
                     <tr class="bg-gray-100 border-b">
                         <th class="py-3 px-6 text-left">ID</th>
                         <th class="py-3 px-6 text-left">Name</th>
+                        <th class="py-3 px-6 text-left">Permissions</th>
+
                         <th class="py-3 px-6 text-left">Actions</th>
                     </tr>
                 </thead>
@@ -22,6 +24,11 @@
                         <tr class="hover:bg-gray-50 border-b">
                             <td class="py-3 px-6">{{ $role->id }}</td>
                             <td class="py-3 px-6">{{ $role->name }}</td>
+                            <td class="py-3 px-6">
+                                @foreach($role->permissions as $permission)
+                                    <span class="inline-block  text-gray-800 px-2 py-1 rounded-full text-xs font-semibold mr-2">- {{ $permission->name }}</span>
+                                @endforeach
+                            </td>
                             <td class="py-3 px-6">
                                 <a href="{{ route('roles.edit', $role->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded inline-block">Edit</a>
                                 <form action="{{ route('roles.destroy', $role->id) }}" method="POST" class="inline">
