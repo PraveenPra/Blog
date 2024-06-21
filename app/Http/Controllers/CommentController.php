@@ -40,7 +40,7 @@ class CommentController extends Controller
         $comment->post_id = $post->id;
         $comment->save();
 
-        return redirect()->route('posts.index')->with('success', 'Comment added successfully');
+        return back()->with('success', 'Comment added successfully');
    
     }
 
