@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class PostController extends Controller 
+class PostController extends Controller
 {
 
 
@@ -26,7 +26,7 @@ class PostController extends Controller
      */
     public function index()
     {
-       
+
         $posts = Post::with(['category', 'tags', 'user'])->paginate(10);
         $categories = Category::all(); // Fetch categories
         $tags = Tag::all();
@@ -36,11 +36,11 @@ class PostController extends Controller
     public function search(Request $request)
     {
         $searchQuery = $request->input('search');
-        $posts = Post::where('title', 'like', '%'.$searchQuery.'%')
-                     ->orWhere('body', 'like', '%'.$searchQuery.'%')
-                     ->with(['category', 'tags', 'user'])
-                     ->paginate(10);
-        
+        $posts = Post::where('title', 'like', '%' . $searchQuery . '%')
+            ->orWhere('body', 'like', '%' . $searchQuery . '%')
+            ->with(['category', 'tags', 'user'])
+            ->paginate(10);
+
         $categories = Category::all(); // Retrieve categories
         $tags = Tag::all();
         return view('posts.index', compact('posts', 'categories', 'tags'));
@@ -65,12 +65,12 @@ class PostController extends Controller
 
     //filter only by category
     public function category(Category $category)
-{
-    $posts = $category->posts()->with(['category', 'tags', 'user'])->paginate(10);
-    $categories = Category::all(); // Retrieve categories
-    $tags = Tag::all();
-    return view('posts.index', compact('posts', 'categories', 'tags'));
-}
+    {
+        $posts = $category->posts()->with(['category', 'tags', 'user'])->paginate(10);
+        $categories = Category::all(); // Retrieve categories
+        $tags = Tag::all();
+        return view('posts.index', compact('posts', 'categories', 'tags'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -100,7 +100,7 @@ class PostController extends Controller
         $imageName = null;
 
         if ($request->hasFile('image')) {
-            $imageName = time().'.'.$request->image->extension();
+            $imageName = time() . '.' . $request->image->extension();
             $request->image->move(public_path('images'), $imageName);
         }
 
@@ -123,7 +123,6 @@ class PostController extends Controller
         }
 
         return redirect()->route('posts.index')->with('success', 'Post created successfully.');
-   
     }
 
     /**
@@ -131,10 +130,18 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        $post->increment('views');
         $post->load(['category', 'tags', 'user', 'comments.user']);
         return view('posts.show', compact('post'));
     }
 
+
+    // Handle likes
+    public function like(Post $post)
+    {
+        $post->increment('likes');
+        return back();
+    }
     /**
      * Show the form for editing the specified resource.
      */
@@ -154,7 +161,7 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-       if ($post->user_id !== Auth::id() && !Auth::user()->hasRole('admin')) {
+        if ($post->user_id !== Auth::id() && !Auth::user()->hasRole('admin')) {
             abort(403);
         }
 
@@ -170,7 +177,7 @@ class PostController extends Controller
         $imageName = $post->image; // Retain the old image by default
 
         if ($request->hasFile('image')) {
-            $imageName = time().'.'.$request->image->extension();
+            $imageName = time() . '.' . $request->image->extension();
             $request->image->move(public_path('images'), $imageName);
         }
 
@@ -191,7 +198,6 @@ class PostController extends Controller
         }
 
         return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
-   
     }
 
     /**
@@ -206,7 +212,6 @@ class PostController extends Controller
         $post->delete();
 
         return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
-   
     }
 
     public function savePost(Post $post)
@@ -214,26 +219,24 @@ class PostController extends Controller
         Auth::user()->savedPosts()->attach($post);
         return back()->with('success', 'Post saved successfully.');
     }
-    
+
     public function unsavePost(Post $post)
     {
         Auth::user()->savedPosts()->detach($post);
         return back()->with('success', 'Post unsaved successfully.');
     }
-    
-
-public function mySavedPosts()
-{
-    $savedPosts = Auth::user()->savedPosts;
-    return view('posts.saved', compact('savedPosts'));
-}
-
-public function followedUsersPosts()
-{
-    $followedUsers = Auth::user()->follows()->pluck('followed_id');
-    $posts = Post::whereIn('user_id', $followedUsers)->get();
-    return view('posts.followed', compact('posts'));
-}
 
 
+    public function mySavedPosts()
+    {
+        $savedPosts = Auth::user()->savedPosts;
+        return view('posts.saved', compact('savedPosts'));
+    }
+
+    public function followedUsersPosts()
+    {
+        $followedUsers = Auth::user()->follows()->pluck('followed_id');
+        $posts = Post::whereIn('user_id', $followedUsers)->get();
+        return view('posts.followed', compact('posts'));
+    }
 }

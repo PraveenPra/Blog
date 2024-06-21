@@ -48,6 +48,7 @@ Route::post('posts/{post}/save', [PostController::class, 'savePost'])->name('pos
 Route::post('posts/{post}/unsave', [PostController::class, 'unsavePost'])->name('posts.unsave');
 Route::get('posts/saved', [PostController::class, 'mySavedPosts'])->name('posts.saved');
 Route::get('posts/followed', [PostController::class, 'followedUsersPosts'])->name('posts.followed');
+Route::post('/posts/{post}/like', [PostController::class, 'like'])->name('posts.like');
 
     Route::resource('posts', PostController::class)->except(['index', 'show']);;
     Route::resource('posts.comments', CommentController::class)->shallow()->except(['index', 'show']);
