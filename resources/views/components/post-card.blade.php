@@ -58,7 +58,7 @@
 
 
                         <span class="flex items-center space-x-1 cursor-pointer">
-                            <i class="fa-regular fa-comment-dots"></i>
+                            <i class="far fa-comment-dots"></i>
                             <a href="{{ route('posts.show', $post) }}" class="text-gray-500 ml-2">{{ $post->comments->count() }}</a>
                         </span>
 
