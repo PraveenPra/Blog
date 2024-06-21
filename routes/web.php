@@ -57,9 +57,13 @@ Route::get('posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
 
 Route::middleware('auth')->group(function () {
-    // Roles CRUD routes
+    
+    Route::get('/roles/{role}/assign-permissions', [RoleController::class, 'assignPermissions'])->name('roles.assign.permissions');
+    Route::put('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.permissions.update');
     Route::resource('roles', RoleController::class);
 
     // Permissions CRUD routes
     Route::resource('permissions', PermissionController::class);
+
+
 });
