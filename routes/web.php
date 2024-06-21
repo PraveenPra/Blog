@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -34,10 +34,14 @@ Route::middleware(['auth'])->group(function () {
   // Route for filtering posts by tag
   Route::get('posts/tag/{tag}', [PostController::class, 'indexByTag'])->name('posts.tag');
 
-     Route::resource('posts', PostController::class);
-    Route::resource('posts.comments', CommentController::class)->shallow();
+     Route::resource('posts', PostController::class)->except(['index', 'show']);;
+    Route::resource('posts.comments', CommentController::class)->shallow()->except(['index', 'show']);;
 });
 
 Route::resource('categories', CategoryController::class)->middleware('role:admin');
 Route::resource('tags', TagController::class)->middleware('role:admin');
 Route::resource('users', UserController::class);
+
+// Public routes accessible to guests
+Route::get('posts', [PostController::class, 'index'])->name('posts.index');
+Route::get('posts/{post}', [PostController::class, 'show'])->name('posts.show');
