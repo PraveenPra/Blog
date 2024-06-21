@@ -1,10 +1,14 @@
 <?php
 
-use App\Http\Controllers\{ProfileController,
+use App\Http\Controllers\{
+    ProfileController,
 
-    PostController,CommentController,
+    PostController,
+    CommentController,
 
-    CategoryController,TagController,UserController,
+    CategoryController,
+    TagController,
+    UserController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -22,25 +26,27 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 Route::middleware(['auth'])->group(function () {
-  // Route for searching posts
-  Route::get('posts/search', [PostController::class, 'search'])->name('posts.search');
+    // Route for searching posts
+    Route::get('posts/search', [PostController::class, 'search'])->name('posts.search');
 
-  // Route for filtering posts by category
-  Route::get('posts/category/{category}', [PostController::class, 'category'])->name('posts.category');
+    // Route for filtering posts by category
+    Route::get('posts/category/{category}', [PostController::class, 'category'])->name('posts.category');
 
-  // Route for filtering posts by tag
-  Route::get('posts/tag/{tag}', [PostController::class, 'indexByTag'])->name('posts.tag');
+    // Route for filtering posts by tag
+    Route::get('posts/tag/{tag}', [PostController::class, 'indexByTag'])->name('posts.tag');
 
-     Route::resource('posts', PostController::class)->except(['index', 'show']);;
-    Route::resource('posts.comments', CommentController::class)->shallow()->except(['index', 'show']);;
+    Route::resource('posts', PostController::class)->except(['index', 'show']);;
+    Route::resource('posts.comments', CommentController::class)->shallow()->except(['index', 'show']);
+
+    Route::resource('categories', CategoryController::class)->middleware('role:admin');
+    Route::resource('tags', TagController::class)->middleware('role:admin');
+    Route::resource('users', UserController::class);
 });
 
-Route::resource('categories', CategoryController::class)->middleware('role:admin');
-Route::resource('tags', TagController::class)->middleware('role:admin');
-Route::resource('users', UserController::class);
+
 
 // Public routes accessible to guests
 Route::get('posts', [PostController::class, 'index'])->name('posts.index');
