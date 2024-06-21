@@ -31,7 +31,7 @@
 
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen {{ $bgClass  }}">
+        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
         <!-- ?? 'bg-gray-100 dark:bg-gray-900' -->
             @include('layouts.adminNavigation')
 
@@ -45,7 +45,7 @@
             @endisset
 
             <!-- Page Content -->
-            <main class="container mx-auto">
+            <main class="container mx-auto ">
                 {{ $slot ?? ''}}
             </main>
         </div>

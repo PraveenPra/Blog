@@ -8,13 +8,13 @@ use Illuminate\View\Component;
 
 class MasterLayout extends Component
 {
-    public $bgClass;
+   
     /**
      * Create a new component instance.
      */
     public function __construct()
     {
-        $this->bgClass = $bgClass ?? 'bg-gray-100 dark:bg-gray-900';
+       
     }
 
     /**

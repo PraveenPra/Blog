@@ -1,4 +1,4 @@
-<x-master-layout  :bgClass="'bg-white'">
+<x-master-layout>
 <div class="mt-4 sticky left-0 top-0">
                     <a href="{{ route('posts.index') }}" class="bg-blue-500 text-white px-4 py-2 rounded">Back to Posts</a>
                 </div>
