@@ -13,8 +13,14 @@ class TagSeeder extends Seeder
      */
     public function run(): void
     {
-        Tag::create(['name' => 'Laravel']);
-        Tag::create(['name' => 'PHP']);
-        Tag::create(['name' => 'JavaScript']);
+        
+        Tag::insert([
+            ['name' => 'Html'],
+            ['name' => 'CSS'],
+            ['name' => 'Javascript'],
+            ['name' => 'PHP'],
+            ['name' => 'Laravel'],
+            ['name' => 'MySQL'],
+        ]);
     }
 }
