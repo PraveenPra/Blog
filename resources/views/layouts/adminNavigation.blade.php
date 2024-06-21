@@ -30,26 +30,32 @@
                         {{ __('Tags') }}
                     </x-nav-link>
                     @endcan
-                    
+
                     <!-- Posts Link -->
                     <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index')">
                         {{ __('Posts') }}
                     </x-nav-link>
 
                      <!-- Users Link -->
+                      @can('manage users')
                      <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
                         {{ __('Users') }}
                     </x-nav-link>
+                    @endcan
 
+                     <!-- roles Link -->
                     @can('view roles')
                     <x-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.index')">
                         {{ __('Roles') }}
                     </x-nav-link>
                     @endcan
 
+                    <!-- Permissions Link -->
+                    @can('view permissions')
                     <x-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.index')">
                         {{ __('Permissions') }}
                     </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
@@ -111,14 +117,18 @@
             </x-responsive-nav-link>
 
             <!-- Categories Responsive Link -->
+             @can('view categories')
             <x-responsive-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.index')">
                 {{ __('Categories') }}
             </x-responsive-nav-link>
+            @endcan
 
             <!-- Tags Responsive Link -->
+            @can('view tags')
             <x-responsive-nav-link :href="route('tags.index')" :active="request()->routeIs('tags.index')">
                 {{ __('Tags') }}
             </x-responsive-nav-link>
+            @endcan
 
             <!-- Posts Responsive Link -->
             <x-responsive-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index')">
@@ -126,18 +136,26 @@
             </x-responsive-nav-link>
 
               <!-- Users Responsive Link -->
+              @can('view users')
               <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
                 {{ __('Users') }}
             </x-responsive-nav-link>
+            @endcan
 
 
+            <!-- Roles Responsive Link -->
+             @can('view roles')
             <x-responsive-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.index')">
                 {{ __('Roles') }}
             </x-responsive-nav-link>
+            @endcan
 
+            <!-- Permissions Responsive Link -->
+            @can('view permissions')
             <x-responsive-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.index')">
                 {{ __('Permissions') }}
             </x-responsive-nav-link>
+            @endcan
 
           
         </div>
