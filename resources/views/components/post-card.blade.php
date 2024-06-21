@@ -1,9 +1,19 @@
 <div class="card bg-transparent shadow-md rounded-lg mb-3">
     <div class="imgBx">
-        @if($post->image)
+        <!-- @if($post->image)
         <img src="{{ asset('images/' . $post->image) }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
         @else
         <div class="h-64 bg-gray-200"></div>
+        @endif -->
+
+        @if($post->image && filter_var($post->image, FILTER_VALIDATE_URL))
+        <img src="{{ $post->image }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
+        @elseif($post->image)
+        <img src="{{ asset('storage/images/' . $post->image) }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
+        @else
+        <div class="h-24 bg-gray-200 flex items-center justify-center">
+            <span class="text-gray-500">No Image Available</span>
+        </div>
         @endif
     </div>
     <div class="content relative">
@@ -39,55 +49,55 @@
                     @endif
                     @endcan
 
-                    
+
 
                 </div>
 
                 <!-- Likes and Views -->
                 <div class="flex items-center space-x-4 text-gray-500 border-t-2 border-gray-200 pt-2">
-                       
-                        <form action="{{ route('posts.like', $post) }}" method="POST">
+
+                    <form action="{{ route('posts.like', $post) }}" method="POST">
                         @csrf
                         <button type="submit" class="flex items-center">
                             <i class="far fa-thumbs-up"></i> {{ $post->likes }}
                         </button>
                     </form>
-                        <span>
-                            <i class="far fa-eye"></i> {{ $post->views }}
-                        </span>
+                    <span>
+                        <i class="far fa-eye"></i> {{ $post->views }}
+                    </span>
 
 
-                        <span class="flex items-center space-x-1 cursor-pointer">
-                            <i class="far fa-comment-dots"></i>
-                            <a href="{{ route('posts.show', $post) }}" class="text-gray-500 ml-2">{{ $post->comments->count() }}</a>
-                        </span>
+                    <span class="flex items-center space-x-1 cursor-pointer">
+                        <i class="far fa-comment-dots"></i>
+                        <a href="{{ route('posts.show', $post) }}" class="text-gray-500 ml-2">{{ $post->comments->count() }}</a>
+                    </span>
 
 
-                        <div>
-                            @auth
-                            @if(Auth::user()->savedPosts->contains($post->id))
-                            <form action="{{ route('posts.unsave', $post) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="text-red-500">
-                                    <i class="fas fa-bookmark"></i> Unsave
-                                </button>
-                            </form>
-                            @else
-                            <form action="{{ route('posts.save', $post) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="text-blue-500">
-                                    <i class="far fa-bookmark"></i> Save
-                                </button>
-                            </form>
-                            @endif
-                            @else <!-- Guest user -->
-                            <a href="{{ route('login') }}" class="text-blue-500">
+                    <div>
+                        @auth
+                        @if(Auth::user()->savedPosts->contains($post->id))
+                        <form action="{{ route('posts.unsave', $post) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="text-red-500">
+                                <i class="fas fa-bookmark"></i> Unsave
+                            </button>
+                        </form>
+                        @else
+                        <form action="{{ route('posts.save', $post) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="text-blue-500">
                                 <i class="far fa-bookmark"></i> Save
-                            </a>
-                            @endauth
-                        </div>
-
+                            </button>
+                        </form>
+                        @endif
+                        @else <!-- Guest user -->
+                        <a href="{{ route('login') }}" class="text-blue-500">
+                            <i class="far fa-bookmark"></i> Save
+                        </a>
+                        @endauth
                     </div>
+
+                </div>
         </div>
 
     </div>

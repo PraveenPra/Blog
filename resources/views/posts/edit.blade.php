@@ -21,28 +21,33 @@
 
 
             <div class="mb-4">
+
                 <label for="image" class="block text-gray-700">Image</label>
                 <input type="file" name="image" id="image" accept="image/*" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('image') border-red-500 @enderror">
+                <small class="text-gray-500">Or paste an image URL:</small>
+                <input type="text" name="image_url" id="image_url" value="{{ old('image_url', $post->image_url ?? '') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                 @error('image')
-                    <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                <p class="text-red-500 text-xs italic">{{ $message }}</p>
                 @enderror
             </div>
 
             <div class="mb-4">
-                @if($post->image)
-                    <img src="{{ asset('images/' . $post->image) }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
+                @if($post->image && filter_var($post->image, FILTER_VALIDATE_URL))
+                <img src="{{ $post->image }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
+                @elseif($post->image)
+                <img src="{{ asset('storage/images/' . $post->image) }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
                 @else
-                    <div class="h-64 bg-gray-200 flex items-center justify-center">
-                        <span class="text-gray-500">No Image Available</span>
-                    </div>
+                <div class="h-64 bg-gray-200 flex items-center justify-center">
+                    <span class="text-gray-500">No Image Available</span>
+                </div>
                 @endif
             </div>
-            
+
             <div class="mb-4">
                 <label for="category_id" class="block text-gray-700">Category</label>
                 <select name="category_id" id="category_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                     @foreach($categories as $category)
-                        <option value="{{ $category->id }}" {{ $category->id == $post->category_id ? 'selected' : '' }}>{{ $category->name }}</option>
+                    <option value="{{ $category->id }}" {{ $category->id == $post->category_id ? 'selected' : '' }}>{{ $category->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -51,7 +56,7 @@
                 <label for="tags" class="block text-gray-700">Tags</label>
                 <select name="tags[]" id="tags" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" multiple>
                     @foreach($tags as $tag)
-                        <option value="{{ $tag->id }}" {{ $post->tags->contains($tag->id) ? 'selected' : '' }}>{{ $tag->name }}</option>
+                    <option value="{{ $tag->id }}" {{ $post->tags->contains($tag->id) ? 'selected' : '' }}>{{ $tag->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -68,24 +73,56 @@
             theme: 'snow',
             modules: {
                 toolbar: [
-                    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-  ['blockquote', 'code-block'],
-  ['link', 'image', 'video', 'formula'],
+                    ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+                    ['blockquote', 'code-block'],
+                    ['link', 'image', 'video', 'formula'],
 
-  [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-  [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
-  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-  [{ 'direction': 'rtl' }],                         // text direction
+                    [{
+                        'header': 1
+                    }, {
+                        'header': 2
+                    }], // custom button values
+                    [{
+                        'list': 'ordered'
+                    }, {
+                        'list': 'bullet'
+                    }, {
+                        'list': 'check'
+                    }],
+                    [{
+                        'script': 'sub'
+                    }, {
+                        'script': 'super'
+                    }], // superscript/subscript
+                    [{
+                        'indent': '-1'
+                    }, {
+                        'indent': '+1'
+                    }], // outdent/indent
+                    [{
+                        'direction': 'rtl'
+                    }], // text direction
 
-  [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    [{
+                        'size': ['small', false, 'large', 'huge']
+                    }], // custom dropdown
+                    [{
+                        'header': [1, 2, 3, 4, 5, 6, false]
+                    }],
 
-  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-  [{ 'font': [] }],
-  [{ 'align': [] }],
+                    [{
+                        'color': []
+                    }, {
+                        'background': []
+                    }], // dropdown with defaults from theme
+                    [{
+                        'font': []
+                    }],
+                    [{
+                        'align': []
+                    }],
 
-  ['clean']                                         // remove formatting button                                        
+                    ['clean'] // remove formatting button                                        
                 ]
             }
         });

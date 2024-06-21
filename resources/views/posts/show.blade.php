@@ -63,9 +63,19 @@
                     @endauth
                 </div>
             </div>
-            @if($post->image)
+
+            @if($post->image && filter_var($post->image, FILTER_VALIDATE_URL))
+                <img src="{{ $post->image }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
+                @elseif($post->image)
+                <img src="{{ asset('storage/images/' . $post->image) }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
+                @else
+                <div class="h-24 bg-gray-200 flex items-center justify-center">
+                    <span class="text-gray-500">No Image Available</span>
+                </div>
+                @endif
+            <!-- @if($post->image)
             <img src="{{ asset('images/'  . $post->image) }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
-            @endif
+            @endif -->
 
             <p class="text-gray-700 mt-4">{!! $post->body !!}</p>
             <p class="text-gray-500 mt-2">Category: {{ $post->category->name }}</p>
