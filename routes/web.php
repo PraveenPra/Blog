@@ -9,6 +9,9 @@ use App\Http\Controllers\{
     CategoryController,
     TagController,
     UserController,
+
+    RoleController,
+    PermissionController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -51,3 +54,12 @@ Route::middleware(['auth'])->group(function () {
 // Public routes accessible to guests
 Route::get('posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('posts/{post}', [PostController::class, 'show'])->name('posts.show');
+
+
+Route::middleware('auth')->group(function () {
+    // Roles CRUD routes
+    Route::resource('roles', RoleController::class);
+
+    // Permissions CRUD routes
+    Route::resource('permissions', PermissionController::class);
+});
