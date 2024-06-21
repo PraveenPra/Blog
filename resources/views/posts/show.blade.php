@@ -4,8 +4,13 @@
             <div class="flex justify-between items-center">
                 <div>
                     <h2 class="text-4xl text-center font-bold">{{ $post->title }}</h2>
-                    <p class="text-gray-500 mt-2">By {{ $post->user->name }} on {{ $post->created_at->format('F j, Y') }}</p>
 
+                    <div class="flex items-center space-x-2">
+                        <img src="{{ $comment->user->photo ?? 'https://images.unsplash.com/photo-1504194104404-433180773017?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGZyZWV8ZW58MHx8MHx8fDA%3D'  }}" class="w-10 h-10 rounded-full" alt="Profile Picture">
+                        <p class="text-gray-700"><strong>{{ $post->user->name }}</strong></p>
+                        
+                        
+                        @auth
                     @if(Auth::id() !== $post->user->id) <!-- Ensure user cannot follow themselves -->
                     <form action="{{ route('follow.user', $post->user->id) }}" method="POST">
                         @csrf
@@ -14,9 +19,20 @@
                         </button>
                     </form>
                     @endif
+                    
+                    @else <!-- Guest user -->
+                        <a href="{{ route('login') }}" class="bg-green-500 text-white px-2 py-1 rounded">
+                            Follow
+                        </a>
+                    @endauth
 
+                    <p><small class="text-gray-600">on {{ $post->created_at->format('F j, Y') }}</small></p>
+                    </div>
+                   
+                  
                 </div>
                 <div>
+                    @auth
                     @if(Auth::user()->savedPosts->contains($post->id))
                     <form action="{{ route('posts.unsave', $post) }}" method="POST">
                         @csrf
@@ -32,10 +48,16 @@
                         </button>
                     </form>
                     @endif
+                    @else <!-- Guest user -->
+                        <a href="{{ route('login') }}" class="text-blue-500">
+                        <i class="far fa-bookmark"></i> Save
+                        </a>
+                    @endauth
                 </div>
             </div>
-
+            @if($post->image)
             <img src="{{ asset('images/'  . $post->image) }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
+            @endif
 
             <p class="text-gray-700 mt-4">{!! $post->body !!}</p>
             <p class="text-gray-500 mt-2">Category: {{ $post->category->name }}</p>
@@ -68,6 +90,7 @@
                         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Comment</button>
                     </div>
                 </form>
+                
                 @endauth
 
                 @foreach($post->comments as $comment)
