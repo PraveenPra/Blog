@@ -1,6 +1,6 @@
 [
     {
-        "id": 2,
+        "id": 1,
         "user_id": 1,
         "title": "Blade directives",
         "body": "<p>To use the formatShortTime method directly in your Blade templates for all comments, you can create a custom Blade directive. This directive will allow you to pass a date/time string or a Carbon instance directly to it and display the formatted short time directly in your views. Here\u2019s how you can implement it:</p><p><br></p><p><strong>Step 1:</strong> Create a Blade Directive Create a Blade directive: Blade directives allow you to define custom PHP functions that are accessible in your Blade templates.</p><p><br></p><p><u>php code</u></p><p><br></p><p>// In your AppServiceProvider or a dedicated service provider for directives</p><p>namespace App\\Providers;</p><p>use Illuminate\\Support\\Facades\\Blade;</p><p>use Illuminate\\Support\\ServiceProvider;</p><p>use App\\Traits\\DateHelperTrait;</p><p><br></p><p>class AppServiceProvider extends ServiceProvider</p><p>{</p><p>public function boot() {</p><p>Blade::directive('shortTime', function ($expression) {</p><p>return \"\";</p><p>});</p><p>}</p><p>}</p><p><br></p><p><strong> Step 2: </strong>Usage in Blade Templates Use the directive in your Blade templates: Once the directive is registered, you can use it anywhere in your Blade files to format dates.</p><p><br></p><p><u>blade code</u></p><p><br></p><p>@foreach ($comments as $comment)</p><p><img src=\"{{ $comment->user->profile_picture }}\" alt=\"Profile Picture\">{{ $comment-&gt;content }}</p><p>Posted @shortTime($comment-&gt;created_at)</p><p>@endforeach</p><p><br></p><p><u>Explanation: </u>Blade Directive Registration: In the boot method of your AppServiceProvider, you register a Blade directive @shortTime that takes an expression (typically a date or a Carbon instance) and calls the formatShortTime method from your DateHelperTrait.</p><p><br></p><p><u>Directive Usage:</u> In your Blade template (comments.blade.php in this example), you can now use @shortTime($comment-&gt;created_at) directly to display the formatted short time for each comment's creation date. Benefits: Direct Usage: Simplifies the display of formatted dates in Blade templates without needing to pass formatted dates from controllers.</p><p><br></p><p><u>Consistency</u>: Ensures that all date formatting follows the same logic across your application.</p><p><br></p><p><u>Flexibility</u>: Allows you to easily adjust the formatting logic by modifying the formatShortTime method in the DateHelperTrait as per your requirements. By implementing this approach, you enhance the readability and maintainability of your Blade templates while ensuring consistent and user-friendly date/time formatting for comments and other entities in your application. Adjust the directive and method as needed to accommodate any additional formatting requirements or preferences you may have.</p>",
@@ -12,7 +12,7 @@
         "updated_at": "2024-06-21T04:36:34.000000Z"
     },
     {
-        "id": 3,
+        "id": 2,
         "user_id": 1,
         "title": "Backup manually added posts(or data) and re-seeded after the migration",
         "body": "<p>it's possible to keep your manually added posts and ensure they are not lost during migrations while developing. Here are a few strategies you can use:</p><p><br></p><p> <strong>1. Use Database Backups</strong></p><p><strong> </strong>One way to handle this is by creating a database backup of your manually added posts. You can restore this backup after running your migrations. Tools like mysqldump for MySQL or pg_dump for PostgreSQL can be useful. </p><p><br></p><p><strong>2. Export Data to Seeder </strong></p><p>You can export your manually added posts to a seeder file. This way, you can seed your database with both initial data and manually added data during development. To export your manually added posts to a JSON file, you should perform this action before you run any migrations that would reset your database. This will ensure that your manually added posts are backed up and can be re-seeded after the migration.</p><p> Here's a step-by-step guide on how to do it: </p><p><br></p><p><strong>Step 1: Export Manually Added Posts to a JSON File</strong></p><p> Create an Artisan Command to Export Posts Create a new Artisan command to export the posts. This way, you can run this command whenever you need to backup your posts. Run the following command to generate a new command:</p><p><br></p><div class=\"ql-code-block-container\" spellcheck=\"false\"><div class=\"ql-code-block\">php artisan make:command ExportPosts </div></div><p><br></p><p>Define the Command Logic. </p><p>Open the newly created command file (app/Console/Commands/ExportPosts.php) and define the logic to export posts to a JSON file. </p><div class=\"ql-code-block-container\" spellcheck=\"false\"><div class=\"ql-code-block\"> namespace App\\Console\\Commands; </div><div class=\"ql-code-block\">use Illuminate\\Console\\Command; </div><div class=\"ql-code-block\">use App\\Models\\Post; </div><div class=\"ql-code-block\">use Illuminate\\Support\\Facades\\File;</div><div class=\"ql-code-block\"> class ExportPosts extends Command </div><div class=\"ql-code-block\">{</div><div class=\"ql-code-block\"> /** * The name and signature of the console command.</div><div class=\"ql-code-block\"> * * @var string */ protected $signature = 'export:posts'; </div><div class=\"ql-code-block\">/** * The console command description. * * @var string */ protected $description = 'Export posts to a JSON file'; /** * Execute the console command. * * @return int */ public function handle() { $posts = Post::all(); File::put('database/seeders/manual_posts.json', $posts-&gt;toJson()); $this-&gt;info('Posts have been exported to database/seeders/manual_posts.json'); return 0; </div><div class=\"ql-code-block\">}</div><div class=\"ql-code-block\"> }</div></div><p> Run the Command to Export Posts. This will automatically create a json file insdie your seeder folder.</p><p> Run the command whenever you need to backup your posts: </p><div class=\"ql-code-block-container\" spellcheck=\"false\"><div class=\"ql-code-block\">php artisan export:posts </div></div><p><br></p><p><strong>Step 2: Create a Seeder to Import the JSON Data </strong></p><p><br></p><p>Create a Seeder to Import the JSON Data Create a new seeder to import the JSON data back into the database.</p><p> Run the following command to generate a new seeder:</p><div class=\"ql-code-block-container\" spellcheck=\"false\"><div class=\"ql-code-block\">php artisan make:seeder ManualPostsSeeder </div></div><p>Define the Seeder Logic Open the newly created seeder file (database/seeders/ManualPostsSeeder.php) and define the logic to import the JSON data. </p><blockquote>Note:The error indicates that the datetime format in your JSON file is not compatible with MySQL's datetime format. MySQL expects the datetime to be in the format Y-m-d H:i:s. To resolve this, we need to ensure that the datetimes in the JSON file are correctly formatted before inserting them into the database. </blockquote><div class=\"ql-code-block-container\" spellcheck=\"false\"><div class=\"ql-code-block\">namespace Database\\Seeders;</div><div class=\"ql-code-block\"> use Illuminate\\Database\\Seeder; </div><div class=\"ql-code-block\">use App\\Models\\Post; use Illuminate\\Support\\Facades\\File; use Carbon\\Carbon; class ManualPostsSeeder extends Seeder { /** * Run the database seeds. * * @return void */ public function run() { // Define the file path $filePath = 'database/seeders/manual_posts.json'; // Check if the file exists if (File::exists($filePath)) { // Read the JSON data from the file $json = File::get($filePath); // Decode the JSON data into an array $posts = json_decode($json, true); // Iterate over each post and format the datetime fields foreach ($posts as &amp;$postData) { if (isset($postData['created_at'])) { $postData['created_at'] = Carbon::parse($postData['created_at'])-&gt;format('Y-m-d H:i:s'); } if (isset($postData['updated_at'])) { $postData['updated_at'] = Carbon::parse($postData['updated_at'])-&gt;format('Y-m-d H:i:s'); } } // Insert the posts into the database Post::insert($posts); } else { // Inform the user that the file was not found $this-&gt;command-&gt;info('Manual posts JSON file not found.'); </div><div class=\"ql-code-block\">}</div><div class=\"ql-code-block\"> }</div><div class=\"ql-code-block\">  }</div></div><p><br></p><p> <u>JSON Data Format:</u> </p><p>Make sure the JSON data in manual_posts.json is in the correct format. Here\u2019s an example of what the JSON file might look like:</p><div class=\"ql-code-block-container\" spellcheck=\"false\"><div class=\"ql-code-block\"> [ { \"title\": \"First Post\", \"body\": \"This is the body of the first post.\", \"category_id\": 1, \"user_id\": 1, \"created_at\": \"2023-06-01T12:00:00.000000Z\", \"updated_at\": \"2023-06-01T12:00:00.000000Z\" }, { \"title\": \"Second Post\", \"body\": \"This is the body of the second post.\", \"category_id\": 2, \"user_id\": 1, \"created_at\": \"2023-06-02T12:00:00.000000Z\", \"updated_at\": \"2023-06-02T12:00:00.000000Z\" } ] </div></div><p><br></p><p><strong>Running the Seeder: </strong>Now you can run the seeder using: </p><div class=\"ql-code-block-container\" spellcheck=\"false\"><div class=\"ql-code-block\">php artisan db:seed --class=ManualPostsSeeder </div></div><p>This should correctly insert the posts with properly formatted datetime fields into the database.</p><p><br></p><p> <strong>Summary </strong></p><p>By following these steps, you will create an automated process to export your manually added posts to a JSON file and import them back into the database after running migrations. This ensures that your manually added data is preserved and re-seeded during development.</p>",
@@ -24,7 +24,7 @@
         "updated_at": "2024-06-20T15:26:00.000000Z"
     },
     {
-        "id": 6,
+        "id": 3,
         "user_id": 1,
         "title": "CSS inverse radius card design",
         "body": "<p>Here is how to achieve that </p><p><br></p><p><strong>styles:</strong></p><div class=\"ql-code-block-container\" spellcheck=\"false\"><div class=\"ql-code-block\">&lt;style&gt;</div><div class=\"ql-code-block\">.card {</div><div class=\"ql-code-block\">            position: relative;</div><div class=\"ql-code-block\">            width: 320px;</div><div class=\"ql-code-block\">            height: 400px;</div><div class=\"ql-code-block\">            background: transparent;</div><div class=\"ql-code-block\">            display: flex;</div><div class=\"ql-code-block\">            flex-direction: column;</div><div class=\"ql-code-block\">            justify-content: space-between;</div><div class=\"ql-code-block\">        }</div><div class=\"ql-code-block\">        .card .imgBx {</div><div class=\"ql-code-block\">            position: relative;</div><div class=\"ql-code-block\">            width: 100%;</div><div class=\"ql-code-block\">            height: 240px;</div><div class=\"ql-code-block\">            background: #f00;</div><div class=\"ql-code-block\">            border-radius: 15px;</div><div class=\"ql-code-block\">            background: url('https://tse3.mm.bing.net/th?id=OIP.TYJqmFIrO3WDbgmf8QsAowAAAA&amp;pid=Api&amp;P=0&amp;h=180');</div><div class=\"ql-code-block\">            background-size: cover;</div><div class=\"ql-code-block\">            background-position: center;</div><div class=\"ql-code-block\">            overflow: hidden;   </div><div class=\"ql-code-block\">        }</div><div class=\"ql-code-block\"><br></div><div class=\"ql-code-block\">        .card .content {</div><div class=\"ql-code-block\">            position: relative;</div><div class=\"ql-code-block\">            width: 100%;</div><div class=\"ql-code-block\">            height: 150px;</div><div class=\"ql-code-block\">        background: #232949;</div><div class=\"ql-code-block\">        border-radius: 15px;</div><div class=\"ql-code-block\">        border-top-left-radius: 0;</div><div class=\"ql-code-block\">    }</div><div class=\"ql-code-block\"><br></div><div class=\"ql-code-block\">    .card .content .price {</div><div class=\"ql-code-block\">        position: absolute;</div><div class=\"ql-code-block\">        /* top same as -height </div><div class=\"ql-code-block\">         top: -80px;</div><div class=\"ql-code-block\">        height: 80px;</div><div class=\"ql-code-block\">        width: 50%;</div><div class=\"ql-code-block\">        background: #232949;</div><div class=\"ql-code-block\">        color: #fff;</div><div class=\"ql-code-block\">        border-top: 10px solid #fff;</div><div class=\"ql-code-block\">        border-right: 10px solid #fff;</div><div class=\"ql-code-block\">        border-top-right-radius: 25px;</div><div class=\"ql-code-block\">    }</div><div class=\"ql-code-block\"><br></div><div class=\"ql-code-block\">    .card .content .price::before {</div><div class=\"ql-code-block\">        content: '';</div><div class=\"ql-code-block\">        position: absolute;</div><div class=\"ql-code-block\">        width: 25px;</div><div class=\"ql-code-block\">        height: 25px;</div><div class=\"ql-code-block\">        background: transparent;</div><div class=\"ql-code-block\">        border-radius: 50%;</div><div class=\"ql-code-block\">        /* -10 on y axis down, -10 on x axis left create a shadow/ white color </div><div class=\"ql-code-block\">        box-shadow: -10px -10px 0 #fff;</div><div class=\"ql-code-block\">    }</div><div class=\"ql-code-block\"><br></div><div class=\"ql-code-block\">    .card .content .price::after {</div><div class=\"ql-code-block\">        content: '';</div><div class=\"ql-code-block\">        position: absolute;</div><div class=\"ql-code-block\">        bottom: 0;</div><div class=\"ql-code-block\">        /* right same as -width and -height </div><div class=\"ql-code-block\">        right: -25px;</div><div class=\"ql-code-block\">        width: 25px;</div><div class=\"ql-code-block\">        height: 25px;</div><div class=\"ql-code-block\">        /* give random color on transparents to see how they work  </div><div class=\"ql-code-block\">        background: transparent;</div><div class=\"ql-code-block\">        border-radius: 50%;</div><div class=\"ql-code-block\">        /* -10 on y axis down, 10 on x axis left create a shadow/ card color </div><div class=\"ql-code-block\">        box-shadow: -10px 10px 0 #232949;</div><div class=\"ql-code-block\">    } </div><div class=\"ql-code-block\">&lt;/style&gt;</div></div><p><br></p><p><strong>Html:</strong></p><div class=\"ql-code-block-container\" spellcheck=\"false\"><div class=\"ql-code-block\"> &lt;div class=\"card\"&gt;</div><div class=\"ql-code-block\">    &lt;div class=\"imgBx\"&gt;&lt;/div&gt;</div><div class=\"ql-code-block\">        &lt;div class=\"content\"&gt;</div><div class=\"ql-code-block\">    </div><div class=\"ql-code-block\">        &lt;p class=\"price \"&gt;</div><div class=\"ql-code-block\">        &lt;span class=\"p-4\"&gt;Tech&lt;/span&gt; &lt;/p&gt;</div><div class=\"ql-code-block\">    &lt;/div&gt;</div><div class=\"ql-code-block\">&lt;/div&gt; </div></div>",
@@ -34,5 +34,179 @@
         "views": 0,
         "created_at": "2024-06-20T19:25:32.000000Z",
         "updated_at": "2024-06-20T19:25:32.000000Z"
+    },
+    {
+        "id": 4,
+        "user_id": 1,
+        "title": "Creating Responsive Web Design with CSS Grid",
+        "body": "<p>CSS Grid layout is a powerful tool to create responsive web designs. It allows you to place elements on a grid, making it easier to create complex layouts that adapt to different screen sizes.</p><p>Here's how you can create a basic responsive layout using CSS Grid:</p><p><br></p><p><strong>Step 1: Define the Grid Container</strong></p><div class=\"ql-code-block-container\" spellcheck=\"false\"><div class=\"ql-code-block\">&lt;style&gt;</div><div class=\"ql-code-block\">    .grid-container {</div><div class=\"ql-code-block\">        display: grid;</div><div class=\"ql-code-block\">        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));</div><div class=\"ql-code-block\">        gap: 20px;</div><div class=\"ql-code-block\">        padding: 20px;</div><div class=\"ql-code-block\">    }</div><div class=\"ql-code-block\">&lt;/style&gt;</div></div><p><br></p><p><strong>Step 2: Place Grid Items</strong></p><div class=\"ql-code-block-container\" spellcheck=\"false\"><div class=\"ql-code-block\">&lt;div class=\"grid-container\"&gt;</div><div class=\"ql-code-block\">    &lt;div class=\"grid-item\"&gt;Item 1&lt;/div&gt;</div><div class=\"ql-code-block\">    &lt;div class=\"grid-item\"&gt;Item 2&lt;/div&gt;</div><div class=\"ql-code-block\">    &lt;div class=\"grid-item\"&gt;Item 3&lt;/div&gt;</div><div class=\"ql-code-block\">&lt;/div&gt;</div></div><p><br></p><p>By using CSS Grid, you can easily create responsive layouts that adjust to different screen sizes while maintaining a consistent design. Experiment with different grid configurations and properties to achieve the desired layout for your web project.</p>",
+        "image": "https://via.placeholder.com/600x400.png",
+        "category_id": 1,
+        "likes": 0,
+        "views": 0,
+        "created_at": "2024-06-19T19:12:10.000000Z",
+        "updated_at": "2024-06-21T04:36:34.000000Z"
+    },
+    {
+        "id": 5,
+        "user_id": 1,
+        "title": "Introduction to Progressive Web Apps (PWAs)",
+        "body": "<p>Progressive Web Apps (PWAs) are web applications that leverage modern web technologies to provide an app-like experience to users. They combine the best features of the web and mobile apps, offering offline capabilities, push notifications, and fast loading times.</p><p>Key features of PWAs include:</p><ul><li>Responsive: PWAs work on any device, enhancing user experience across platforms.</li><li>Connectivity-independent: They can work offline or on low-quality networks, using cached data.</li><li>App-like: PWAs can be installed on the user's device and launched from the home screen.</li><li>Safe: They are served via HTTPS to prevent snooping and ensure content integrity.</li></ul><p>Developing a PWA involves using technologies like Service Workers, Web App Manifests, and responsive design principles. By following PWA best practices, developers can create fast, reliable, and engaging web experiences that rival native apps.</p>",
+        "image": "https://via.placeholder.com/600x400.png",
+        "category_id": 1,
+        "likes": 0,
+        "views": 0,
+        "created_at": "2024-06-20T15:16:18.000000Z",
+        "updated_at": "2024-06-20T15:26:00.000000Z"
+    },
+    {
+        "id": 6,
+        "user_id": 1,
+        "title": "CSS Tricks: Creating a Circular Navigation Menu",
+        "body": "<p>Creating a circular navigation menu using CSS can add a modern touch to your website's design. Here's a simple approach to achieve this:</p><p><br></p><p><strong>HTML:</strong></p><div class=\"ql-code-block-container\" spellcheck=\"false\"><div class=\"ql-code-block\">&lt;ul class=\"circle-menu\"&gt;</div><div class=\"ql-code-block\">    &lt;li&gt;&lt;a href=\"#\"&gt;Home&lt;/a&gt;&lt;/li&gt;</div><div class=\"ql-code-block\">    &lt;li&gt;&lt;a href=\"#\"&gt;About&lt;/a&gt;&lt;/li&gt;</div><div class=\"ql-code-block\">    &lt;li&gt;&lt;a href=\"#\"&gt;Services&lt;/a&gt;&lt;/li&gt;</div><div class=\"ql-code-block\">    &lt;li&gt;&lt;a href=\"#\"&gt;Portfolio&lt;/a&gt;&lt;/li&gt;</div><div class=\"ql-code-block\">    &lt;li&gt;&lt;a href=\"#\"&gt;Contact&lt;/a&gt;&lt;/li&gt;</div><div class=\"ql-code-block\">&lt;/ul&gt;</div></div><p><br></p><p><strong>CSS:</strong></p><div class=\"ql-code-block-container\" spellcheck=\"false\"><div class=\"ql-code-block\">&lt;style&gt;</div><div class=\"ql-code-block\">    .circle-menu {</div><div class=\"ql-code-block\">        list-style-type: none;</div><div class=\"ql-code-block\">        padding: 0;</div><div class=\"ql-code-block\">        display: flex;</div><div class=\"ql-code-block\">        justify-content: center;</div><div class=\"ql-code-block\">    }</div><div class=\"ql-code-block\">    .circle-menu li {</div><div class=\"ql-code-block\">        margin: 0 10px;</div><div class=\"ql-code-block\">        transform: rotate(-90deg);</div><div class=\"ql-code-block\">        transition: transform 0.5s ease;</div><div class=\"ql-code-block\">    }</div><div class=\"ql-code-block\">    .circle-menu li:hover {</div><div class=\"ql-code-block\">        transform: rotate(0deg);</div><div class=\"ql-code-block\">    }</div><div class=\"ql-code-block\">&lt;/style&gt;</div></div><p><br></p><p>By using CSS transformations and transitions, you can create a circular navigation menu that rotates items when hovered over, providing a visually appealing user experience.</p>",
+        "image": "https://via.placeholder.com/600x400.png",
+        "category_id": 1,
+        "likes": 0,
+        "views": 0,
+        "created_at": "2024-06-20T19:25:32.000000Z",
+        "updated_at": "2024-06-20T19:25:32.000000Z"
+    },
+    {
+        "id": 7,
+        "user_id": 1,
+        "title": "Enhancing User Experience with Smooth Page Transitions",
+        "body": "<p>Smooth page transitions can significantly enhance user experience on a website, providing a seamless navigation experience between pages. Here's how you can implement smooth page transitions using CSS and JavaScript:</p><p><br></p><p><strong>CSS:</strong></p><div class=\"ql-code-block-container\" spellcheck=\"false\"><div class=\"ql-code-block\">&lt;style&gt;</div><div class=\"ql-code-block\">    .page-transition {</div><div class=\"ql-code-block\">        transition: transform 0.3s ease-out;</div><div class=\"ql-code-block\">    }</div><div class=\"ql-code-block\">    .page-enter, .page-leave-to {</div><div class=\"ql-code-block\">        transform: translateX(100%);</div><div class=\"ql-code-block\">        opacity: 0;</div><div class=\"ql-code-block\">    }</div><div class=\"ql-code-block\">&lt;/style&gt;</div></div><p><br></p><p><strong>JavaScript:</strong></p><div class=\"ql-code-block-container\" spellcheck=\"false\"><div class=\"ql-code-block\">&lt;script&gt;</div><div class=\"ql-code-block\">    document.addEventListener('DOMContentLoaded', () =&gt; {</div><div class=\"ql-code-block\">        const links = document.querySelectorAll('a');</div><div class=\"ql-code-block\">        links.forEach(link =&gt; {</div><div class=\"ql-code-block\">            link.addEventListener('click', (e) =&gt; {</div><div class=\"ql-code-block\">                e.preventDefault();</div><div class=\"ql-code-block\">                const href = link.getAttribute('href');</div><div class=\"ql-code-block\">                fetchPage(href); // Implement fetchPage function to load new content</div><div class=\"ql-code-block\">            });</div><div class=\"ql-code-block\">        });</div><div class=\"ql-code-block\">    });</div><div class=\"ql-code-block\">&lt;/script&gt;</div></div><p><br></p><p>Implementing smooth page transitions involves using CSS transitions for animation and JavaScript to handle navigation events. Ensure to optimize page load times and animations for a fluid user experience.</p>",
+        "image": "https://via.placeholder.com/600x400.png",
+        "category_id": 1,
+        "likes": 0,
+        "views": 0,
+        "created_at": "2024-06-22T09:00:00.000000Z",
+        "updated_at": "2024-06-22T09:00:00.000000Z"
+    },
+    {
+        "id": 8,
+        "user_id": 1,
+        "title": "Building Scalable Web Applications with Microservices Architecture",
+        "body": "<p>Microservices architecture is a design pattern where an application is structured as a collection of loosely coupled services, each responsible for a specific business capability. This approach allows for greater scalability, flexibility, and resilience compared to traditional monolithic architectures.</p><p>Key characteristics of microservices architecture include:</p><ul><li>Decentralized data management</li><li>Independent deployment and scalability</li><li>Resilience to failures in one service not affecting others</li><li>Technology diversity, allowing each service to use the best-fit technology stack</li></ul><p>To build scalable web applications using microservices architecture, consider factors such as service isolation, communication protocols (e.g., REST, gRPC), containerization (e.g., Docker), and orchestration (e.g., Kubernetes). Adopting DevOps practices and continuous integration/continuous deployment (CI/CD) pipelines is also crucial for managing microservices effectively.</p>",
+        "image": "https://via.placeholder.com/600x400.png",
+        "category_id": 1,
+        "likes": 0,
+        "views": 0,
+        "created_at": "2024-06-23T10:30:00.000000Z",
+        "updated_at": "2024-06-23T10:30:00.000000Z"
+    },
+    {
+        "id": 9,
+        "user_id": 1,
+        "title": "Creating Interactive Charts with Chart.js",
+        "body": "<p>Chart.js is a popular JavaScript library for creating interactive charts and graphs on web pages. It provides a simple yet powerful API for creating a variety of chart types, including bar charts, line charts, pie charts, and more.</p><p>Here's a basic example of creating a bar chart using Chart.js:</p><div class=\"ql-code-block-container\" spellcheck=\"false\"><div class=\"ql-code-block\">&lt;canvas id=\"myChart\" width=\"400\" height=\"400\"&gt;&lt;/canvas&gt;</div></div><p><br></p><div class=\"ql-code-block-container\" spellcheck=\"false\"><div class=\"ql-code-block\">&lt;script&gt;</div><div class=\"ql-code-block\">    const ctx = document.getElementById('myChart').getContext('2d');</div><div class=\"ql-code-block\">    const myChart = new Chart(ctx, {</div><div class=\"ql-code-block\">        type: 'bar',</div><div class=\"ql-code-block\">        data: {</div><div class=\"ql-code-block\">            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],</div><div class=\"ql-code-block\">            datasets: [{</div><div class=\"ql-code-block\">                label: '# of Votes',</div><div class=\"ql-code-block\">                data: [12, 19, 3, 5, 2, 3],</div><div class=\"ql-code-block\">                backgroundColor: [</div><div class=\"ql-code-block\">                    'rgba(255, 99, 132, 0.2)',</div><div class=\"ql-code-block\">                    'rgba(54, 162, 235, 0.2)',</div><div class=\"ql-code-block\">                    'rgba(255, 206, 86, 0.2)',</div><div class=\"ql-code-block\">                    'rgba(75, 192, 192, 0.2)',</div><div class=\"ql-code-block\">                    'rgba(153, 102, 255, 0.2)',</div><div class=\"ql-code-block\">                    'rgba(255, 159, 64, 0.2)'</div><div class=\"ql-code-block\">                ],</div><div class=\"ql-code-block\">                borderColor: [</div><div class=\"ql-code-block\">                    'rgba(255, 99, 132, 1)',</div><div class=\"ql-code-block\">                    'rgba(54, 162, 235, 1)',</div><div class=\"ql-code-block\">                    'rgba(255, 206, 86, 1)',</div><div class=\"ql-code-block\">                    'rgba(75, 192, 192, 1)',</div><div class=\"ql-code-block\">                    'rgba(153, 102, 255, 1)',</div><div class=\"ql-code-block\">                    'rgba(255, 159, 64, 1)'</div><div class=\"ql-code-block\">                ],</div><div class=\"ql-code-block\">                borderWidth: 1</div><div class=\"ql-code-block\">            }]</div><div class=\"ql-code-block\">        },</div><div class=\"ql-code-block\">        options: {</div><div class=\"ql-code-block\">            scales: {</div><div class=\"ql-code-block\">                y: {</div><div class=\"ql-code-block\">                    beginAtZero: true</div><div class=\"ql-code-block\">                }</div><div class=\"ql-code-block\">            }</div><div class=\"ql-code-block\">        }</div><div class=\"ql-code-block\">    });</div><div class=\"ql-code-block\">&lt;/script&gt;</div></div><p><br></p><p>Chart.js simplifies the process of creating dynamic charts on your web pages. Customize chart types, colors, and animations to visualize data effectively and enhance user engagement.</p>",
+        "image": "https://via.placeholder.com/600x400.png",
+        "category_id": 1,
+        "likes": 0,
+        "views": 0,
+        "created_at": "2024-06-24T12:00:00.000000Z",
+        "updated_at": "2024-06-24T12:00:00.000000Z"
+    },
+    {
+        "id": 10,
+        "user_id": 1,
+        "title": "Exploring Quantum Computing: Future of Technology",
+        "body": "<p>Quantum computing represents a revolutionary approach to computation, leveraging quantum mechanics principles such as superposition and entanglement. Unlike classical computers that use bits to process information as 0s or 1s, quantum computers use quantum bits or qubits, which can exist in multiple states simultaneously.</p><p>This capability allows quantum computers to solve complex problems significantly faster than classical computers. Key applications of quantum computing include cryptography, optimization problems, and simulating quantum systems.</p><p>Despite its immense potential, quantum computing faces challenges such as decoherence and error correction. Researchers continue to advance quantum algorithms and hardware to unlock its full potential in transforming various industries.</p>",
+        "image": "https://via.placeholder.com/600x400.png",
+        "category_id": 4,
+        "likes": 0,
+        "views": 0,
+        "created_at": "2024-06-25T09:00:00.000000Z",
+        "updated_at": "2024-06-25T09:00:00.000000Z"
+    },
+    {
+        "id": 11,
+        "user_id": 1,
+        "title": "The Benefits of Regular Exercise for Mental Health",
+        "body": "<p>Regular exercise not only improves physical fitness but also plays a crucial role in maintaining mental health. Physical activity stimulates the production of endorphins, neurotransmitters that promote feelings of well-being and happiness.</p><p>Benefits of exercise for mental health include stress reduction, improved sleep quality, enhanced cognitive function, and alleviation of symptoms related to anxiety and depression. Incorporating a variety of exercises, such as aerobic, strength training, and yoga, can provide holistic benefits for mental and emotional well-being.</p><p>Consulting with healthcare professionals and creating personalized exercise routines can maximize the mental health benefits of regular physical activity.</p>",
+        "image": "https://via.placeholder.com/600x400.png",
+        "category_id": 5,
+        "likes": 0,
+        "views": 0,
+        "created_at": "2024-06-26T10:00:00.000000Z",
+        "updated_at": "2024-06-26T10:00:00.000000Z"
+    },
+    {
+        "id": 12,
+        "user_id": 1,
+        "title": "Exploring Culinary Delights: Traditional Dishes Around the World",
+        "body": "<p>Traditional dishes from different cultures offer a diverse range of flavors and culinary experiences. From Italian pasta dishes like lasagna and carbonara to Japanese sushi and sashimi, exploring traditional cuisine provides insights into cultural heritage and local ingredients.</p><p>Each dish reflects unique cooking techniques, seasonal ingredients, and historical influences. Traditional food not only satisfies hunger but also serves as a bridge to connect people and traditions across generations.</p><p>Exploring traditional dishes encourages culinary diversity and appreciation for global flavors, making food a universal language that celebrates cultural richness.</p>",
+        "image": "https://via.placeholder.com/600x400.png",
+        "category_id": 6,
+        "likes": 0,
+        "views": 0,
+        "created_at": "2024-06-27T11:00:00.000000Z",
+        "updated_at": "2024-06-27T11:00:00.000000Z"
+    },
+    {
+        "id": 13,
+        "user_id": 1,
+        "title": "Top 10 Destinations to Visit in Southeast Asia",
+        "body": "<p>Southeast Asia is renowned for its stunning landscapes, rich cultural heritage, and vibrant cities. Here are the top 10 destinations to explore in Southeast Asia:</p><ol><li>Bali, Indonesia</li><li>Bangkok, Thailand</li><li>Singapore City, Singapore</li><li>Halong Bay, Vietnam</li><li>Angkor Wat, Cambodia</li><li>Kuala Lumpur, Malaysia</li><li>Luang Prabang, Laos</li><li>Bagan, Myanmar</li><li>Palawan, Philippines</li><li>Ubud, Indonesia</li></ol><p>Each destination offers unique experiences, from pristine beaches and ancient temples to bustling markets and culinary delights. Whether you're seeking relaxation, adventure, or cultural immersion, Southeast Asia promises unforgettable travel experiences.</p><p>Plan your itinerary to discover the beauty and diversity of Southeast Asia's top destinations, each offering a glimpse into its rich history and natural wonders.</p>",
+        "image": "https://via.placeholder.com/600x400.png",
+        "category_id": 7,
+        "likes": 0,
+        "views": 0,
+        "created_at": "2024-06-28T12:00:00.000000Z",
+        "updated_at": "2024-06-28T12:00:00.000000Z"
+    },
+    {
+        "id": 14,
+        "user_id": 1,
+        "title": "2024 Fashion Trends: Sustainable and Ethical Fashion",
+        "body": "<p>2024 brings a renewed focus on sustainable and ethical fashion, with trends that emphasize eco-friendly materials, fair trade practices, and transparent supply chains. Key trends include:</p><ul><li>Upcycled and vintage clothing</li><li>Slow fashion movement</li><li>Organic and biodegradable fabrics</li><li>Gender-neutral and inclusive designs</li></ul><p>Brands and consumers alike are embracing sustainable fashion to reduce environmental impact and support ethical production practices. From high-end labels to independent designers, the shift towards sustainability is reshaping the fashion industry.</p><p>By making conscious fashion choices, individuals can contribute to a more sustainable future while expressing personal style and supporting ethical brands.</p>",
+        "image": "https://via.placeholder.com/600x400.png",
+        "category_id": 8,
+        "likes": 0,
+        "views": 0,
+        "created_at": "2024-06-29T13:00:00.000000Z",
+        "updated_at": "2024-06-29T13:00:00.000000Z"
+    },
+    {
+        "id": 15,
+        "user_id": 1,
+        "title": "The Evolution of Streaming Platforms: Entertainment Revolution",
+        "body": "<p>Streaming platforms have revolutionized the entertainment industry, offering on-demand access to a vast library of movies, TV shows, and original content. The evolution of streaming platforms has transformed how audiences consume entertainment, shifting from traditional cable TV to personalized, subscription-based services.</p><p>Key players in the streaming industry include Netflix, Amazon Prime Video, Disney+, Hulu, and HBO Max, each competing to offer exclusive content and unique viewing experiences. The rise of streaming has democratized entertainment, enabling global audiences to access diverse content anytime, anywhere.</p><p>As streaming continues to dominate the entertainment landscape, innovations in technology, content production, and user experience shape the future of digital entertainment.</p>",
+        "image": "https://via.placeholder.com/600x400.png",
+        "category_id": 9,
+        "likes": 0,
+        "views": 0,
+        "created_at": "2024-06-30T14:00:00.000000Z",
+        "updated_at": "2024-06-30T14:00:00.000000Z"
+    },
+    {
+        "id": 16,
+        "user_id": 1,
+        "title": "2024 Olympics: Celebrating Sportsmanship and Global Unity",
+        "body": "<p>The 2024 Olympics unite athletes from around the world in a celebration of sportsmanship, excellence, and global unity. Held in Paris, France, this prestigious event showcases a diverse range of sports, from athletics and swimming to gymnastics and team sports.</p><p>Athletes compete for medals and glory, embodying the Olympic values of respect, friendship, and fair play. The Olympics not only highlight athletic prowess but also promote cultural exchange and international cooperation.</p><p>As spectators cheer for their favorite athletes and nations, the 2024 Olympics inspire unity and solidarity across borders, fostering a shared passion for sports and global camaraderie.</p>",
+        "image": "https://via.placeholder.com/600x400.png",
+        "category_id": 10,
+        "likes": 0,
+        "views": 0,
+        "created_at": "2024-07-01T15:00:00.000000Z",
+        "updated_at": "2024-07-01T15:00:00.000000Z"
+    },
+    {
+        "id": 17,
+        "user_id": 1,
+        "title": "Digital Transformation in Business: Embracing Technological Innovation",
+        "body": "<p>Digital transformation is reshaping business operations and strategies, leveraging technological innovation to enhance efficiency, customer experience, and competitive advantage. Key components of digital transformation include:</p><ul><li>Cloud computing and data analytics</li><li>Artificial intelligence and machine learning</li><li>Internet of Things (IoT) and smart devices</li></ul>",
+        "image": "https://via.placeholder.com/600x400.png",
+        "category_id": 11,
+        "likes": 0,
+        "views": 0,
+        "created_at": "2024-07-01T15:00:00.000000Z",
+        "updated_at": "2024-07-01T15:00:00.000000Z"
     }
+    
+    
+    
+    
+    
+    
 ]

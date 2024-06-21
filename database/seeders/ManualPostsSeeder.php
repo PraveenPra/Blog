@@ -32,6 +32,9 @@ class ManualPostsSeeder extends Seeder
   
               // Iterate over each post and format the datetime fields
               foreach ($posts as &$postData) {
+                // Remove the 'id' field to allow autoincrement in the database
+                unset($postData['id']);
+
                   if (isset($postData['created_at'])) {
                       $postData['created_at'] = Carbon::parse($postData['created_at'])->format('Y-m-d H:i:s');
                   }
