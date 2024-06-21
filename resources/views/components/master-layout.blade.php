@@ -23,6 +23,10 @@
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
 
 
+     <!-- Google Fonts -->
+     <!-- <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans&display=swap" rel="stylesheet"> -->
+
+
     <!-- <link rel="stylesheet" href="{{asset('fontawesome/css/all.min.css')}}"> -->
      <!-- download fontawesome 6 version and put it in public folder,then u can uncomment this link to use it -->
 
@@ -36,6 +40,7 @@
     <meta name="description" content="{{ $metaDescription ?? 'Explore insightful posts on various topics.' }}">
     <meta name="keywords" content="{{ $metaKeywords ?? 'technology, laravel, php, web development' }}">
     <meta name="author" content="{{ $metaAuthor ?? 'Manikanta' }}">
+
 
     </head>
     <body class="font-sans antialiased">
