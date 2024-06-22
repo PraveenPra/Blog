@@ -1,12 +1,16 @@
 <div class="card bg-transparent shadow-md rounded-lg mb-3">
     <div class="imgBx">
-        <!-- @if($post->image)
-        <img src="{{ asset('images/' . $post->image) }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
-        @else
-        <div class="h-64 bg-gray-200"></div>
-        @endif -->
+    @if($post->image && filter_var($post->image, FILTER_VALIDATE_URL))
+            <img src="{{ $post->image }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
+            @elseif($post->image)
+            <img src="{{ asset('images/' . $post->image) }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
+            @else
+            <div class="h-24 bg-gray-200 flex items-center justify-center">
+                <span class="text-gray-500">No Image Available</span>
+            </div>
+            @endif
 
-        @if($post->image && filter_var($post->image, FILTER_VALIDATE_URL))
+        <!-- @if($post->image && filter_var($post->image, FILTER_VALIDATE_URL))
         <img src="{{ $post->image }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
         @elseif($post->image)
         <img src="{{ asset('storage/images/' . $post->image) }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
@@ -14,7 +18,7 @@
         <div class="h-24 bg-gray-200 flex items-center justify-center">
             <span class="text-gray-500">No Image Available</span>
         </div>
-        @endif
+        @endif -->
     </div>
     <div class="content relative">
         <p class="head ">

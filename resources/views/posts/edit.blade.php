@@ -35,7 +35,7 @@
                 @if($post->image && filter_var($post->image, FILTER_VALIDATE_URL))
                 <img src="{{ $post->image }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
                 @elseif($post->image)
-                <img src="{{ asset('storage/images/' . $post->image) }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
+                <img src="{{ asset('images/' . $post->image) }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
                 @else
                 <div class="h-64 bg-gray-200 flex items-center justify-center">
                     <span class="text-gray-500">No Image Available</span>

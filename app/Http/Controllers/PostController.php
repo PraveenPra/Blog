@@ -190,8 +190,11 @@ class PostController extends Controller
         // Handle image upload or URL
         if ($request->hasFile('image')) {
             // Handle uploaded image
-            $imagePath = $request->file('image')->store('public/images');
-            $post->image = basename($imagePath); // Save only the filename
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
+            $post->image = $imageName;
+            // $imagePath = $request->file('image')->store('public/images');
+            // $post->image = basename($imagePath); // Save only the filename
         } elseif ($request->filled('image_url')) {
             // Handle image URL
             $post->image = $request->image_url; // Store URL directly in image field
