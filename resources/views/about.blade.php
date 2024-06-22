@@ -7,6 +7,6 @@
         <h2 class="text-xl font-bold mt-4">What I Do</h2>
         <p>On this blog, you will find a collection of posts which cover a wide range of topics related to my work, including coding tutorials, personal reflections, etc. My goal is to provide valuable insights and inspire others in the tech community.</p>
         <h2 class="text-xl font-bold mt-4">Connect with Me</h2>
-        <p>If you have any questions or would like to collaborate, feel free to reach out to me through the <a href="{{ route('contact') }}" class="underline">contact page</a>. I'm always open to new opportunities and connections.</p>
+        <p>If you have any questions or would like to collaborate, feel free to reach out to me through the <a href="{{ route('contact.form') }}" class="underline">contact page</a>. I'm always open to new opportunities and connections.</p>
     </div>
 </x-master-layout>
