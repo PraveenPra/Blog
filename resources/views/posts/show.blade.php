@@ -1,43 +1,42 @@
 <x-master-layout>
 
-<x-seo-meta
-        :title="$post->title"
-        :metaDescription="Str::limit($post->body, 150)"
-        :metaKeywords="implode(', ', $post->tags->pluck('name')->toArray())"
-        :metaAuthor="$post->user->name"
-    />
-    
+    <x-seo-meta :title="$post->title" :metaDescription="Str::limit($post->body, 150)" :metaKeywords="implode(', ', $post->tags->pluck('name')->toArray())" :metaAuthor="$post->user->name" />
+
     <div class="container mx-auto p-4">
         <div class="mb-3 p-4">
             <div class="flex justify-between items-center">
-                <div>
+                <div class="mb-8">
                     <h2 class="text-4xl text-center font-bold">{{ $post->title }}</h2>
 
                     <div class="flex items-center space-x-2">
-                        <img src="{{ $comment->user->photo ?? 'https://images.unsplash.com/photo-1504194104404-433180773017?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGZyZWV8ZW58MHx8MHx8fDA%3D'  }}" class="w-10 h-10 rounded-full" alt="Profile Picture">
+                        @if ($post->user->image)
+                        <img src="{{ asset('images/users/' . $post->user->image) }}" alt="Profile Image" class="w-10 h-10 rounded-full">
+                        @else
+                        <img src="{{ 'https://images.unsplash.com/photo-1504194104404-433180773017?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGZyZWV8ZW58MHx8MHx8fDA%3D'  }}" class="w-10 h-10 rounded-full" alt="Profile Picture">
+                        @endif
                         <p class="text-gray-700"><strong>{{ $post->user->name }}</strong></p>
-                        
-                        
+
+
                         @auth
-                    @if(Auth::id() !== $post->user->id) <!-- Ensure user cannot follow themselves -->
-                    <form action="{{ route('follow.user', $post->user->id) }}" method="POST">
-                        @csrf
-                        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">
-                            {{ Auth::user()->isFollowing($post->user) ? 'Unfollow' : 'Follow' }}
-                        </button>
-                    </form>
-                    @endif
-                    
-                    @else <!-- Guest user -->
+                        @if(Auth::id() !== $post->user->id) <!-- Ensure user cannot follow themselves -->
+                        <form action="{{ route('follow.user', $post->user->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">
+                                {{ Auth::user()->isFollowing($post->user) ? 'Unfollow' : 'Follow' }}
+                            </button>
+                        </form>
+                        @endif
+
+                        @else <!-- Guest user -->
                         <a href="{{ route('login') }}" class="bg-green-500 text-white px-2 py-1 rounded">
                             Follow
                         </a>
-                    @endauth
+                        @endauth
 
-                    <p><small class="text-gray-600">on {{ $post->created_at->format('F j, Y') }}</small></p>
+                        <p><small class="text-gray-600">on {{ $post->created_at->format('F j, Y') }}</small></p>
                     </div>
-                   
-                  
+
+
                 </div>
                 <div>
                     @auth
@@ -57,22 +56,22 @@
                     </form>
                     @endif
                     @else <!-- Guest user -->
-                        <a href="{{ route('login') }}" class="text-blue-500">
+                    <a href="{{ route('login') }}" class="text-blue-500">
                         <i class="far fa-bookmark"></i> Save
-                        </a>
+                    </a>
                     @endauth
                 </div>
             </div>
 
             @if($post->image && filter_var($post->image, FILTER_VALIDATE_URL))
-                <img src="{{ $post->image }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
-                @elseif($post->image)
-                <img src="{{ asset('storage/images/' . $post->image) }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
-                @else
-                <div class="h-24 bg-gray-200 flex items-center justify-center">
-                    <span class="text-gray-500">No Image Available</span>
-                </div>
-                @endif
+            <img src="{{ $post->image }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
+            @elseif($post->image)
+            <img src="{{ asset('storage/images/' . $post->image) }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
+            @else
+            <div class="h-24 bg-gray-200 flex items-center justify-center">
+                <span class="text-gray-500">No Image Available</span>
+            </div>
+            @endif
             <!-- @if($post->image)
             <img src="{{ asset('images/'  . $post->image) }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
             @endif -->
@@ -108,13 +107,19 @@
                         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Comment</button>
                     </div>
                 </form>
-                
+
                 @endauth
 
                 @foreach($post->comments as $comment)
                 <div class="border-t border-gray-200 pt-2 pb-4">
                     <div class="flex items-center space-x-2">
-                        <img src="{{ $comment->user->photo ?? 'https://images.unsplash.com/photo-1504194104404-433180773017?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGZyZWV8ZW58MHx8MHx8fDA%3D'  }}" class="w-10 h-10 rounded-full" alt="Profile Picture">
+
+                        @if ($post->user->image)
+                        <img src="{{ asset('images/users/' . $post->user->image) }}" alt="Profile Image" class="w-10 h-10 rounded-full">
+                        @else
+                        <img src="{{ 'https://images.unsplash.com/photo-1504194104404-433180773017?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGZyZWV8ZW58MHx8MHx8fDA%3D'  }}" class="w-10 h-10 rounded-full" alt="Profile Picture">
+                        @endif
+
                         <p class="text-gray-700"><strong>{{ $comment->user->name }}</strong></p>
                         <p><small class="text-gray-600">@shortTime($comment->created_at)</small></p>
                         <br>
