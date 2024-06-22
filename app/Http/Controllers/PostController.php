@@ -27,7 +27,7 @@ class PostController extends Controller
     public function index()
     {
 
-        $posts = Post::with(['category', 'tags', 'user'])->paginate(10);
+        $posts = Post::with(['category', 'tags', 'user'])->paginate(12);
         $categories = Category::all(); // Fetch categories
         $tags = Tag::all();
         return view('posts.index', compact('posts', 'categories', 'tags'));
@@ -56,7 +56,7 @@ class PostController extends Controller
 
     public function indexByTag(Tag $tag)
     {
-        $posts = $tag->posts()->with(['category', 'tags', 'user'])->paginate(10);
+        $posts = $tag->posts()->with(['category', 'tags', 'user'])->paginate(12);
         $tags = Tag::all();
         $categories = Category::all();
         return view('posts.index', compact('posts', 'tags', 'categories'));
@@ -66,7 +66,7 @@ class PostController extends Controller
     //filter only by category
     public function category(Category $category)
     {
-        $posts = $category->posts()->with(['category', 'tags', 'user'])->paginate(10);
+        $posts = $category->posts()->with(['category', 'tags', 'user'])->paginate(12);
         $categories = Category::all(); // Retrieve categories
         $tags = Tag::all();
         return view('posts.index', compact('posts', 'categories', 'tags'));
