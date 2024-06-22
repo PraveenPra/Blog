@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use App\Traits\DateHelperTrait;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +22,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Blade::directive('shortTime', function ($expression) {
+            return "<?php echo App\Traits\DateHelperTrait::formatShortTime($expression); ?>";
+        });
+        Blade::directive('truncateText', function ($expression) {
+            list($text, $length) = explode(',', $expression);
+            return "<?php echo \App\Traits\TextTruncatorTrait::truncateText($text, $length); ?>";
+        });
     }
 }
