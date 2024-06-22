@@ -21,10 +21,10 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            // AdminSeeder::class,
+            AdminSeeder::class,
             
-            // CategorySeeder::class,
-            // TagSeeder::class,
+            CategorySeeder::class,
+            TagSeeder::class,
             // PostSeeder::class, //for only 1 initial post by admin
             ManualPostsSeeder::class
         ]);

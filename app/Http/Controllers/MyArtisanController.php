@@ -20,25 +20,25 @@ class MyArtisanController extends Controller
         }
         // Define the list of commands you want to be available
         $commands = [
-            'key:generate',
+            // 'key:generate',
 
-            'optimize',
+            // 'optimize',
             'optimize:clear',
-            'cache:clear',
-            'config:clear',
-            'view:clear',
+            // 'cache:clear',
+            // 'config:clear',
+            // 'view:clear',
 
-            'config:cache',
-            'route:cache',
-            'view:cache',
+            // 'config:cache',
+            // 'route:cache',
+            // 'view:cache',
 
-            'migrate',
-            'migrate:refresh',
-            'migrate:reset',
-            'migrate:rollback',
-            'migrate:fresh',
+            // 'migrate',
+            // 'migrate:refresh --seed',
+            // 'migrate:reset',
+            // 'migrate:rollback',
+            // 'migrate:fresh',
 
-            'db:seed',
+            // 'db:seed',
             
             'export:posts',
         ];
@@ -60,25 +60,25 @@ class MyArtisanController extends Controller
 
         // Whitelist allowed commands
         $allowedCommands = [
-            'key:generate',
+            // 'key:generate',
 
-            'optimize',
+            // 'optimize',
             'optimize:clear',
-            'cache:clear',
-            'config:clear',
-            'view:clear',
+            // 'cache:clear',
+            // 'config:clear',
+            // 'view:clear',
 
-            'config:cache',
-            'route:cache',
-            'view:cache',
+            // 'config:cache',
+            // 'route:cache',
+            // 'view:cache',
 
-            'migrate',
-            'migrate:refresh',
-            'migrate:reset',
-            'migrate:rollback',
-            'migrate:fresh',
+            // 'migrate',
+            // 'migrate:refresh --seed',
+            // 'migrate:reset',
+            // 'migrate:rollback',
+            // 'migrate:fresh',
 
-            'db:seed',
+            // 'db:seed',
             
             'export:posts',
             // 'storage:link',
