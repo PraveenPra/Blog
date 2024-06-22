@@ -65,6 +65,11 @@
                         {{ __('Saved') }}
                     </x-nav-link>
                   
+                    @can('manage contact submissions')
+                    <x-nav-link :href="route('show.contact-submissions')" :active="request()->routeIs('show.contact-submissions')">
+                        {{ __('Contacted me') }}
+                    </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
@@ -174,7 +179,11 @@
                 {{ __('Saved') }}
             </x-responsive-nav-link>
 
-           
+            @can('manage contact submissions')
+                    <x-responsive-nav-link :href="route('show.contact-submissions')" :active="request()->routeIs('show.contact-submissions')">
+                {{ __('Contacted me') }}
+            </x-responsive-nav-link>
+                    @endcan
         </div>
 
         <!-- Responsive Settings Options -->

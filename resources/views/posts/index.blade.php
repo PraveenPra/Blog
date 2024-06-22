@@ -69,17 +69,22 @@
     </style>
 
     <x-slot name="header">
+        <div class="flex justify-between">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight ">
             {{ __('Posts') }}
         </h2>
 
         <!-- Search Form -->
-        <form action="{{ route('posts.search') }}" method="GET" class="mb-8 float-right">
+         <form action="{{ route('posts.search') }}" method="GET" >
             <div class="flex items-center">
                 <input type="text" name="search" class="px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Search posts...">
                 <button type="submit" class="ml-2 bg-blue-500 text-white px-4 py-2 rounded">Search</button>
             </div>
         </form>
+        
+       
+        </div>
+       
     </x-slot>
 
 

@@ -62,5 +62,26 @@
                 {{ $slot ?? ''}}
             </main>
         </div>
+        <!-- Footer -->
+<footer class="bg-gray-800 text-white py-6">
+    <div class="container mx-auto text-center">
+        <div class="mb-4 flex gap-4 justify-center items-center">
+            <a href="{{ route('home') }}" class="text-gray-300 hover:text-white mx-2">Home</a>
+             <a href="{{ route('about') }}" class="text-gray-300 hover:text-white mx-2">About</a>
+            <a href="{{ route('contact.form') }}" class="text-gray-300 hover:text-white mx-2">Contact</a>
+          {{--  <a href="{{ route('privacy-policy') }}" class="text-gray-300 hover:text-white mx-2">Privacy Policy</a>
+            <a href="{{ route('terms-of-service') }}" class="text-gray-300 hover:text-white mx-2">Terms of Service</a>--}}
+        </div>
+        <div class="mb-4 flex justify-center items-center gap-4">
+          
+            <a href="https://www.linkedin.com/in/manikanta-l-728811146/" target="_blank" class="text-gray-300 hover:text-white mx-2"> <i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+            <a href="https://github.com/PraveenPra" target="_blank" class="text-gray-300 hover:text-white mx-2"> <i class="fa-brands fa-github"></i> GitHub</a>
+        </div>
+        <div class="text-gray-400">
+            &copy; {{ date('Y') }} Manikanta. All rights reserved.
+        </div>
+    </div>
+</footer>
+
     </body>
 </html>

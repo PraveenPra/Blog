@@ -7,6 +7,7 @@ use App\Http\Controllers\{
     CommentController,
 
     CategoryController,
+    InfoController,
     TagController,
     UserController,
 
@@ -77,4 +78,16 @@ Route::middleware('auth')->group(function () {
     Route::resource('permissions', PermissionController::class);
 
 
+});
+
+
+// Route::get('/privacy-policy', [InfoController::class, 'privacyPolicy'])->name('privacy-policy');
+// Route::get('/terms-of-service', [InfoController::class, 'termsOfService'])->name('terms-of-service');
+
+Route::get('/about', [InfoController::class, 'about'])->name('about');
+Route::get('/contact', [InfoController::class, 'contactForm'])->name('contact.form');
+Route::post('/contact', [InfoController::class, 'submitContact'])->name('contact.submit');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/contact-submissions', [InfoController::class, 'show_contact_submissions'])->name('show.contact-submissions');
 });

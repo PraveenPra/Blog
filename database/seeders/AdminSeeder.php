@@ -30,7 +30,7 @@ class AdminSeeder extends Seeder
             'create posts', 'edit posts', 'delete posts','edit own posts', 'delete own posts',
             'create comments', 'edit comments','edit own comments','delete comments', 'delete own comments',
             'manage categories', 'manage tags', 'use admin features',
-            'view categories', 'view tags', 'view roles', 'view permissions', 'manage users',
+            'view categories', 'view tags', 'view roles', 'view permissions', 'manage users', 'manage contact submissions',
         ];
 
         $userPermissions = [
