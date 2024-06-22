@@ -28,8 +28,12 @@ class ExportPosts extends Command
     public function handle()
     {
         $posts = Post::all();
-        File::put('database/seeders/manual_posts.json', $posts->toJson());
+        // File::put('database/seeders/manual_posts.json', $posts->toJson());
 
+        //absolute path so that it works on from any location
+        $filePath = base_path('database/seeders/manual_posts.json');
+        File::put($filePath, $posts->toJson());
+        
         $this->info('Posts have been exported to database/seeders/manual_posts.json');
         return 0;
     }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\{
+    
     ProfileController,
 
     PostController,
@@ -8,6 +9,7 @@ use App\Http\Controllers\{
 
     CategoryController,
     InfoController,
+    MyArtisanController,
     TagController,
     UserController,
 
@@ -90,4 +92,10 @@ Route::post('/contact', [InfoController::class, 'submitContact'])->name('contact
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/contact-submissions', [InfoController::class, 'show_contact_submissions'])->name('show.contact-submissions');
+});
+
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/artisan', [MyArtisanController::class, 'index'])->name('artisan.index');
+    Route::post('/artisan/run', [MyArtisanController::class, 'run'])->name('artisan.run');
 });
