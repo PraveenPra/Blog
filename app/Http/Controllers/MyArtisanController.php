@@ -85,11 +85,17 @@ class MyArtisanController extends Controller
 
         ];
         if (in_array($command, $allowedCommands)) {
+            Log::info("Running command: $command");
 
             try {
-                Artisan::call($command);
+                $exitCode = Artisan::call($command);
                 $output = Artisan::output();
-                return redirect()->route('artisan.index')->with('status', "Command executed successfully: $output");
+                Log::info("Command output: $output");
+                if ($exitCode === 0) {
+                    return redirect()->route('artisan.index')->with('status', "Command executed successfully: $output");
+                } else {
+                    return redirect()->route('artisan.index')->with('error', "Command failed with exit code $exitCode: $output");
+                }
             } catch (\Exception $e) {
                 Log::error('Artisan command failed: ' . $e->getMessage());
                 return redirect()->route('artisan.index')->with('error', 'Failed to execute command: ' . $e->getMessage());
