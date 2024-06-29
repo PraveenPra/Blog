@@ -116,6 +116,14 @@
                     {{ __('Log In') }}
                 </a>
                 @endauth
+
+                <!-- <button id="darkModeToggle" class="w-10 h-10 ml-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none transition-colors duration-300">
+                    <i id="darkModeIcon" class="fas fa-sun"></i>
+                </button> -->
+                <button class="darkModeToggle w-10 h-10 ml-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none transition-colors duration-300">
+                    <i class="darkModeIcon fas fa-sun"></i>
+                </button>
+
             </div>
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
@@ -197,6 +205,18 @@
                 {{ __('Artisan Commands') }}
             </x-responsive-nav-link>
             @endrole
+
+
+
+            <!-- <button id="darkModeToggle" class="w-10 h-10 ml-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none transition-colors duration-300">
+                <i id="darkModeIcon" class="fas fa-sun"></i>
+            </button> -->
+
+            <button class="darkModeToggle w-10 h-10 ml-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none transition-colors duration-300">
+                <i class="darkModeIcon fas fa-sun"></i>
+            </button>
+
+
         </div>
 
         <!-- Responsive Settings Options -->
@@ -230,4 +250,62 @@
             @endauth
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleButtons = document.querySelectorAll('.darkModeToggle');
+            const darkModeIcons = document.querySelectorAll('.darkModeIcon');
+            const body = document.body;
+
+            // Function to apply the saved theme or system preference
+            function applyTheme(theme) {
+                if (theme === 'dark') {
+                    body.classList.add('dark');
+                    darkModeIcons.forEach(icon => {
+                        icon.classList.remove('fa-sun');
+                        icon.classList.add('fa-moon');
+                    });
+                } else {
+                    body.classList.remove('dark');
+                    darkModeIcons.forEach(icon => {
+                        icon.classList.remove('fa-moon');
+                        icon.classList.add('fa-sun');
+                    });
+                }
+            }
+
+            // Add event listeners to the buttons
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const currentTheme = body.classList.contains('dark') ? 'dark' : 'light';
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    body.classList.toggle('dark');
+                    if (newTheme === 'dark') {
+                        darkModeIcons.forEach(icon => {
+                            icon.classList.remove('fa-sun');
+                            icon.classList.add('fa-moon');
+                        });
+                    } else {
+                        darkModeIcons.forEach(icon => {
+                            icon.classList.remove('fa-moon');
+                            icon.classList.add('fa-sun');
+                        });
+                    }
+                    localStorage.setItem('theme', newTheme);
+                });
+            });
+
+            // Check localStorage for saved theme
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                applyTheme(savedTheme);
+            } else {
+                // Default to system preference if no saved theme
+                const systemPreference = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                applyTheme(systemPreference);
+            }
+        });
+    </script>
+
+
+
 </nav>
