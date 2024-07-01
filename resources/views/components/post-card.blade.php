@@ -62,12 +62,17 @@
                 </div>
 
                 <!-- Likes and Views -->
-                <div class="flex items-center space-x-4 text-gray-500 border-t-2 mt-4 border-gray-500 pt-2">
+                <div class="flex items-center space-x-4 text-gray-500 border-t-2 mt-4 border-gray-50 pt-2">
+
 
                     <form action="{{ route('posts.like', $post) }}" method="POST">
                         @csrf
                         <button type="submit" class="flex items-center">
-                            <i class="far fa-thumbs-up"></i> {{ $post->likes }}
+                            <i class="far fa-heart"></i>
+
+                            <p class="ml-2">
+                                {{ $post->likes }}
+                            </p>
                         </button>
                     </form>
                     <span>
@@ -76,31 +81,31 @@
 
 
                     <span class="flex items-center space-x-1 cursor-pointer">
-                        <i class="far fa-comment-dots"></i>
+                        <i class="far fa-comment"></i>
                         <a href="{{ route('posts.show', $post) }}" class="text-gray-500 ml-2">{{ $post->comments->count() }}</a>
                     </span>
 
 
-                    <div>
+                    <div class="flex-1">
                         @auth
                         @if(Auth::user()->savedPosts->contains($post->id))
-                        <form action="{{ route('posts.unsave', $post) }}" method="POST">
+                        <form action="{{ route('posts.unsave', $post) }}" method="POST" class="ml-8">
                             @csrf
                             <button type="submit" class="text-red-500">
-                                <i class="fas fa-bookmark"></i> Unsave
+                                <i class="fas fa-bookmark"></i>
                             </button>
                         </form>
                         @else
                         <form action="{{ route('posts.save', $post) }}" method="POST" class="ml-8">
                             @csrf
                             <button type="submit" class="text-blue-500">
-                                <i class="far fa-bookmark"></i> Save
+                                <i class="far fa-bookmark"></i>
                             </button>
                         </form>
                         @endif
                         @else <!-- Guest user -->
                         <a href="{{ route('login') }}" class="text-blue-500">
-                            <i class="far fa-bookmark"></i> Save
+                            <i class="far fa-bookmark"></i>
                         </a>
                         @endauth
                     </div>
