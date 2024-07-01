@@ -13,7 +13,7 @@
 
             <div class="mb-4">
                 <label for="editor" class="block text-gray-700">Body</label>
-                <div id="editor">
+                <div id="editor" style="height:300px">
                     {!! $post->body !!}
                 </div>
                 <textarea name="body" style="display:none;"></textarea>

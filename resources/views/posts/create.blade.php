@@ -15,7 +15,7 @@
 
             <div class="mb-4">
                 <label for="editor" class="block text-gray-700">Body</label>
-                <div id="editor" style="height:500px"></div>
+                <div id="editor" style="height:300px"></div>
                 <textarea name="body" style="display:none;"></textarea>
                 @error('body')
                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
@@ -26,7 +26,7 @@
                 <label for="image" class="block text-gray-700">Image</label>
                 <input type="file" name="image" id="image" accept="image/*" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('image') border-red-500 @enderror">
 
-                <small class="text-gray-500">Or paste an image URL:</small>
+                <small class="text-gray-300">Or paste an image URL:</small>
                 <input type="text" name="image_url" id="image_url" value="{{ old('image_url', $post->image_url ?? '') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
 
                 @error('image')
