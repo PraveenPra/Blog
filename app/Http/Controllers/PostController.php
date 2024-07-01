@@ -260,4 +260,16 @@ class PostController extends Controller
         $posts = Post::whereIn('user_id', $followedUsers)->get();
         return view('posts.followed', compact('posts'));
     }
+
+    public function myPosts()
+    {
+        $user = auth()->user();
+        $posts = Post::where('user_id', $user->id)
+            ->with(['category', 'tags', 'user'])
+            ->latest()
+            ->paginate(12);
+        $categories = Category::all(); // Fetch categories
+        $tags = Tag::all();
+        return view('posts.my-posts',  compact('posts', 'categories', 'tags'));
+    }
 }

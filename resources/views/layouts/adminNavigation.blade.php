@@ -57,6 +57,10 @@
                     </x-nav-link>
                     @endcan
 
+                    <x-nav-link :href="route('posts.my')" :active="request()->routeIs('posts.my')">
+                        {{ __('My posts') }}
+                    </x-nav-link>
+
                     <x-nav-link :href="route('posts.followed')" :active="request()->routeIs('posts.followed')">
                         {{ __('Following') }}
                     </x-nav-link>
@@ -185,9 +189,16 @@
             </x-responsive-nav-link>
             @endcan
 
+
+            <x-responsive-nav-link :href="route('posts.my')" :active="request()->routeIs('posts.my')">
+                {{ __('My posts') }}
+            </x-responsive-nav-link>
+
             <x-responsive-nav-link :href="route('posts.followed')" :active="request()->routeIs('posts.followed')">
                 {{ __('Following') }}
             </x-responsive-nav-link>
+
+
 
             <x-responsive-nav-link :href="route('posts.saved')" :active="request()->routeIs('posts.saved')">
                 {{ __('Saved') }}
