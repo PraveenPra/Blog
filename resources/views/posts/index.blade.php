@@ -95,8 +95,8 @@
         <a href="{{ route('posts.index') }}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded mr-2"> All</a>
 
         @foreach ($categories as $category)
-        <a href="{{ route('posts.category', $category) }}" class="bg-gray-200 text-gray-700 px-4 py-2  rounded  
-                 {{ request()->is('posts/category/'.$category->id) ? 'bg-green-500 text-white' : '' }}">{{ $category->name }}</a>
+        <a href="{{ route('posts.category', $category) }}" class=" px-4 py-2  rounded  
+                 {{ request()->is('posts/category/'.$category->id) ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700' }}">{{ $category->name }}</a>
         @endforeach
     </div>
 
@@ -111,11 +111,11 @@
     <div class="my-4  " style="display: flex;flex-wrap: wrap; gap: 10px;">
 
 
-        <a href="{{ route('posts.index') }}" class="border-2 border-gray-500 text-gray-700 px-4 py-2 rounded font-thin text-xs"> All</a>
+        <a href="{{ route('posts.index') }}" class="border-2  text-gray-700 px-4 py-2 rounded font-thin text-xs"> All</a>
 
         @foreach($tags as $tag)
-        <a href="{{ route('posts.tag', $tag) }}" class="border-2 border-gray-500 text-gray-700 px-4 py-2 rounded font-thin text-xs
-             {{ request()->is('posts/tag/'.$tag->id) ? 'border-green-500 text-green-500' : '' }}">#{{ $tag->name }}</a>
+        <a href="{{ route('posts.tag', $tag) }}" class="border-2  px-4 py-2 rounded font-thin text-xs
+             {{ request()->is('posts/tag/'.$tag->id) ? 'border-gray-300 text-blue-500' : ' text-gray-600' }}">#{{ $tag->name }}</a>
         @endforeach
 
     </div>
