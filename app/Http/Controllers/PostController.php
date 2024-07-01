@@ -27,7 +27,7 @@ class PostController extends Controller
     public function index()
     {
 
-        $posts = Post::with(['category', 'tags', 'user'])->latest()->paginate(12);
+        $posts = Post::with(['category', 'tags', 'user'])->inRandomOrder()->paginate(12);
         $categories = Category::all(); // Fetch categories
         $tags = Tag::all();
         return view('posts.index', compact('posts', 'categories', 'tags'));

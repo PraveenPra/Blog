@@ -14,8 +14,8 @@ trait DateHelperTrait
      */
     public static function formatShortTime($dateTime)
     {
-         // Handle the case where $dateTime is a string and convert it to a Carbon instance if needed
-         if (is_string($dateTime)) {
+        // Handle the case where $dateTime is a string and convert it to a Carbon instance if needed
+        if (is_string($dateTime)) {
             $dateTime = new Carbon($dateTime);
         } elseif (!$dateTime instanceof Carbon) {
             return ''; // Return empty string if $dateTime is neither string nor Carbon instance
@@ -34,8 +34,6 @@ trait DateHelperTrait
 
         // Determine which interval to use based on the difference in seconds
         if ($diffInSeconds < 0) {
-            return 'Future'; // Handle future dates (if needed)
-        } elseif ($diffInSeconds < 10) {
             return 'Just now'; // Less than 10 seconds ago
         } elseif ($diffInSeconds < $minute) {
             return $diffInSeconds . 'sec ago'; // Seconds ago
