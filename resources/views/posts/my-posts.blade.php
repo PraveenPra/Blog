@@ -114,8 +114,8 @@
         <a href="{{ route('posts.index') }}" class="border-2 border-gray-500 text-gray-700 px-4 py-2 rounded font-thin text-xs"> All</a>
 
         @foreach($tags as $tag)
-        <a href="{{ route('posts.tag', $tag) }}" class="border-2  px-4 py-2 rounded font-thin text-xs
-             {{ request()->is('posts/tag/'.$tag->id) ? 'border-blue-500 text-blue-500' : 'border-gray-500 text-gray-700' }}">#{{ $tag->name }}</a>
+        <a href="{{ route('my.posts.tag', $tag) }}" class="border-2  px-4 py-2 rounded font-thin text-xs
+             {{ request()->is('my-posts/tag/'.$tag->id) ? 'border-blue-500 text-blue-500' : 'border-gray-500 text-gray-700' }}">#{{ $tag->name }}</a>
         @endforeach
 
     </div>

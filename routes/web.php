@@ -44,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Route for filtering posts by tag
     Route::get('posts/tag/{tag}', [PostController::class, 'indexByTag'])->name('posts.tag');
+    Route::get('my-posts/tag/{tag}', [PostController::class, 'indexByUserPostsTag'])->name('my.posts.tag');
 
 
 

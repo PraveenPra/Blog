@@ -63,7 +63,17 @@ class PostController extends Controller
         return view('posts.index', compact('posts', 'tags', 'categories'));
     }
 
+    public function indexByUserPostsTag(Tag $tag)
+    {
+        $user = Auth::user();
+        $posts = $user->posts()->whereHas('tags', function ($query) use ($tag) {
+            $query->where('tags.id', $tag->id);
+        })->with(['category', 'tags', 'user'])->latest()->paginate(12);
 
+        $tags = Tag::all();
+        $categories = Category::all();
+        return view('posts.my-posts', compact('posts', 'tags', 'categories'));
+    }
     //filter only by category
     public function category(Category $category)
     {
