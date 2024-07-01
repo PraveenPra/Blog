@@ -50,6 +50,7 @@
         <!-- ?? 'bg-gray-100 dark:bg-gray-900' -->
         @include('layouts.adminNavigation')
 
+
         <!-- Page Heading -->
         @isset($header)
         <header class="bg-white dark:bg-gray-800 shadow">
@@ -78,8 +79,13 @@
         @endisset
 
         <!-- Page Content -->
-        <main class="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-            {{ $slot ?? ''}}
+        <main class="flex">
+            @include('layouts.leftNavigation')
+
+            <div class="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 ">
+
+                {{ $slot ?? ''}}
+            </div>
         </main>
     </div>
     <!-- Footer -->

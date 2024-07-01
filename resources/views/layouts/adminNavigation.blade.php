@@ -17,45 +17,14 @@
                         <strong class="text-xl font-bold text-black dark:text-white"> {{ __('BlogHub') }} </strong>
                     </x-nav-link>
 
-                    <!-- Categories Link -->
-                    @can('view categories')
-                    <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.index')">
-                        {{ __('Categories') }}
-                    </x-nav-link>
-                    @endcan
 
-                    <!-- Tags Link -->
-                    @can('view tags')
-                    <x-nav-link :href="route('tags.index')" :active="request()->routeIs('tags.index')">
-                        {{ __('Tags') }}
-                    </x-nav-link>
-                    @endcan
 
                     <!-- Posts Link -->
                     <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index')">
                         {{ __('Posts') }}
                     </x-nav-link>
 
-                    <!-- Users Link -->
-                    @can('manage users')
-                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
-                        {{ __('Users') }}
-                    </x-nav-link>
-                    @endcan
 
-                    <!-- roles Link -->
-                    @can('view roles')
-                    <x-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.index')">
-                        {{ __('Roles') }}
-                    </x-nav-link>
-                    @endcan
-
-                    <!-- Permissions Link -->
-                    @can('view permissions')
-                    <x-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.index')">
-                        {{ __('Permissions') }}
-                    </x-nav-link>
-                    @endcan
 
                     <x-nav-link :href="route('posts.my')" :active="request()->routeIs('posts.my')">
                         {{ __('My posts') }}
