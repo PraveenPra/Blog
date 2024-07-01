@@ -54,15 +54,15 @@
         <!-- Page Heading -->
         @isset($header)
         <header class="bg-white dark:bg-gray-800 shadow">
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-                <div class="flex justify-between">
+                <div class="flex justify-between items-center">
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight dark:text-gray-400">
                         {{ ucwords(str_replace('-', ' ', request()->path())) }}
                     </h2>
 
                     <!-- Search Form -->
-                    <form action="{{ route('posts.search') }}" method="GET" class="mt-4">
+                    <form action="{{ route('posts.search') }}" method="GET" class="my-2">
                         <div class="flex items-center">
                             <input type="text" name="search" class="w-full px-4 py-2 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm 
         dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200" placeholder="Search posts...">

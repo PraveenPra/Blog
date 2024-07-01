@@ -17,9 +17,9 @@
 
             <div class="flex flex-col items-end gap-4">
                 @can('view categories')
-                <div class="group shrink-0 flex items-center border-b-2 border-gray-50 p-4 sm:p-6 lg:p-8  
+                <div class="group shrink-0 flex items-center border-b-2 border-gray-50 
                 {{request()->routeIs('categories.index')? 'border-r-4 ' : ''}}">
-                    <a href="{{ route('categories.index') }}" class="shrink-0 flex items-center gap-2 ">
+                    <a href="{{ route('categories.index') }}" class="shrink-0 flex items-center p-4 sm:p-6 lg:p-8 gap-2 ">
                         <i class="fa-solid fa-layer-group" style="font-size: 20px;"></i>
                         <span class="hidden group-hover:inline-block">Categories</span>
                     </a>
@@ -27,8 +27,8 @@
                 @endcan
 
                 @can('view tags')
-                <div class="group shrink-0 flex items-center border-b-2 border-gray-50 p-4 sm:p-6 lg:p-8">
-                    <a href="{{ route('tags.index') }}" class="shrink-0 flex items-center gap-2 {{request()->routeIs('tags.index')? 'border-r-4 border-gray-500' : ''}}">
+                <div class="group shrink-0 flex items-center border-b-2 border-gray-50 ">
+                    <a href="{{ route('tags.index') }}" class="shrink-0 flex items-center gap-2 p-4 sm:p-6 lg:p-8 {{request()->routeIs('tags.index')? 'border-r-4 border-gray-500' : ''}}">
                         <i class="fa-solid fa-hashtag" style="font-size: 20px;"></i>
                         <span class="hidden group-hover:inline-block">Tags</span>
                     </a>
@@ -36,8 +36,8 @@
                 @endcan
 
                 @can('manage users')
-                <div class="group shrink-0 flex items-center border-b-2 border-gray-50 p-4 sm:p-6 lg:p-8">
-                    <a href="{{ route('users.index') }}" class="shrink-0 flex items-center gap-2 {{request()->routeIs('users.index')? 'border-r-4 border-gray-500' : ''}}">
+                <div class="group shrink-0 flex items-center border-b-2 border-gray-50 ">
+                    <a href="{{ route('users.index') }}" class="shrink-0 flex items-center gap-2 p-4 sm:p-6 lg:p-8 {{request()->routeIs('users.index')? 'border-r-4 border-gray-500' : ''}}">
                         <i class="fa-solid fa-users" style="font-size: 20px;"></i>
                         <span class="hidden group-hover:inline-block">Users</span>
                     </a>
@@ -45,8 +45,8 @@
                 @endcan
 
                 @can('view roles')
-                <div class="group shrink-0 flex items-center border-b-2 border-gray-50 p-4 sm:p-6 lg:p-8">
-                    <a href="{{ route('roles.index') }}" class="shrink-0 flex items-center gap-2 {{request()->routeIs('roles.index')? 'border-r-4 border-gray-500' : ''}}">
+                <div class="group shrink-0 flex items-center border-b-2 border-gray-50 ">
+                    <a href="{{ route('roles.index') }}" class="shrink-0 flex items-center gap-2 p-4 sm:p-6 lg:p-8 {{request()->routeIs('roles.index')? 'border-r-4 border-gray-500' : ''}}">
                         <i class="fa-solid fa-people-roof" style="font-size: 20px;"></i>
                         <span class="hidden group-hover:inline-block">Roles</span>
                     </a>
@@ -54,8 +54,8 @@
                 @endcan
 
                 @can('view permissions')
-                <div class="group shrink-0 flex items-center p-4 sm:p-6 lg:p-8">
-                    <a href="{{ route('permissions.index') }}" class="shrink-0 flex items-center gap-2 {{request()->routeIs('permissions.index')? 'border-r-4 border-gray-500' : ''}}">
+                <div class="group shrink-0 flex items-center ">
+                    <a href="{{ route('permissions.index') }}" class="shrink-0 flex items-center p-4 sm:p-6 lg:p-8 gap-2 {{request()->routeIs('permissions.index')? 'border-r-4 border-gray-500' : ''}}">
                         <i class="fa-solid fa-check-double" style="font-size: 20px;"></i>
                         <span class="hidden group-hover:inline-block">Permissions</span>
                     </a>
