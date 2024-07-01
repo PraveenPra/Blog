@@ -73,6 +73,17 @@ class PostController extends Controller
         return view('posts.index', compact('posts', 'categories', 'tags'));
     }
 
+    public function userPostsCategory(Category $category)
+    {
+        $user = Auth::user();
+
+        $posts = $user->posts()->where('category_id', $category->id)->with(['category', 'tags', 'user'])->latest()->paginate(12);
+
+        $categories = Category::all(); // Retrieve categories (optional)
+        $tags = Tag::all(); // Retrieve tags (optional)
+
+        return view('posts.my-posts', compact('posts', 'categories', 'tags'));
+    }
     /**
      * Show the form for creating a new resource.
      */

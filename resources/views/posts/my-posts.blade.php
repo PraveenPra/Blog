@@ -95,8 +95,8 @@
         <a href="{{ route('posts.index') }}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded mr-2"> All</a>
 
         @foreach ($categories as $category)
-        <a href="{{ route('posts.category', $category) }}" class=" px-4 py-2  rounded  
-                 {{ request()->is('posts/category/'.$category->id) ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700' }}">{{ $category->name }}</a>
+        <a href="{{ route('my.posts.category', $category) }}" class=" px-4 py-2  rounded  
+                 {{ request()->is('my-posts/category/'.$category->id) ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700' }}">{{ $category->name }}</a>
         @endforeach
     </div>
 

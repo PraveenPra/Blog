@@ -40,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Route for filtering posts by category
     Route::get('posts/category/{category}', [PostController::class, 'category'])->name('posts.category');
+    Route::get('my-posts/category/{category}', [PostController::class, 'userPostscategory'])->name('my.posts.category');
 
     // Route for filtering posts by tag
     Route::get('posts/tag/{tag}', [PostController::class, 'indexByTag'])->name('posts.tag');
