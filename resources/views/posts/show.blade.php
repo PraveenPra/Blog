@@ -6,7 +6,7 @@
         <div class="mb-3 p-4">
             <div class="flex justify-between items-center">
                 <div class="mb-8">
-                    <h2 class="text-4xl text-center font-bold">{{ $post->title }}</h2>
+                    <h2 class="text-4xl text-center dark:text-gray-100 font-bold">{{ $post->title }}</h2>
 
                     <div class="flex items-center space-x-2">
                         @if ($post->user->image)
@@ -75,8 +75,14 @@
             <!-- @if($post->image)
             <img src="{{ asset('images/'  . $post->image) }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
             @endif -->
+            <div class="quill-content">
+                <!-- Render Quill content here -->
+                <p class="text-gray-700 mt-4">{!! $post->body !!}</p>
+            </div>
 
-            <p class="text-gray-700 mt-4">{!! $post->body !!}</p>
+
+
+
             <p class="text-gray-500 mt-2">Category: {{ $post->category->name }}</p>
             <p class="text-gray-500 mt-2">
                 @foreach($post->tags as $tag)

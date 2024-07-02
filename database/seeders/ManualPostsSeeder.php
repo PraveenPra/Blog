@@ -35,6 +35,9 @@ class ManualPostsSeeder extends Seeder
                 // Remove the 'id' field to allow autoincrement in the database
                 unset($postData['id']);
 
+                // Set the 'user_id' field to 1 so it matches the default user(admin)
+                $postData['user_id'] = 1;
+
                   if (isset($postData['created_at'])) {
                       $postData['created_at'] = Carbon::parse($postData['created_at'])->format('Y-m-d H:i:s');
                   }

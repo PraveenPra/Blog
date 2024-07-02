@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\{
+
     ProfileController,
 
     PostController,
@@ -8,6 +9,7 @@ use App\Http\Controllers\{
 
     CategoryController,
     InfoController,
+    MyArtisanController,
     TagController,
     UserController,
 
@@ -38,27 +40,28 @@ Route::middleware(['auth'])->group(function () {
 
     // Route for filtering posts by category
     Route::get('posts/category/{category}', [PostController::class, 'category'])->name('posts.category');
+    Route::get('my-posts/category/{category}', [PostController::class, 'userPostscategory'])->name('my.posts.category');
 
     // Route for filtering posts by tag
     Route::get('posts/tag/{tag}', [PostController::class, 'indexByTag'])->name('posts.tag');
+    Route::get('my-posts/tag/{tag}', [PostController::class, 'indexByUserPostsTag'])->name('my.posts.tag');
 
 
 
-Route::post('users/{user}/follow', [UserController::class, 'follow'])->name('follow.user');
-Route::post('posts/{post}/save', [PostController::class, 'savePost'])->name('posts.save');
-Route::post('posts/{post}/unsave', [PostController::class, 'unsavePost'])->name('posts.unsave');
-Route::get('posts/saved', [PostController::class, 'mySavedPosts'])->name('posts.saved');
-Route::get('posts/followed', [PostController::class, 'followedUsersPosts'])->name('posts.followed');
-Route::post('/posts/{post}/like', [PostController::class, 'like'])->name('posts.like');
+    Route::post('users/{user}/follow', [UserController::class, 'follow'])->name('follow.user');
+    Route::post('posts/{post}/save', [PostController::class, 'savePost'])->name('posts.save');
+    Route::post('posts/{post}/unsave', [PostController::class, 'unsavePost'])->name('posts.unsave');
+    Route::get('posts/saved', [PostController::class, 'mySavedPosts'])->name('posts.saved');
+    Route::get('posts/followed', [PostController::class, 'followedUsersPosts'])->name('posts.followed');
+    Route::post('/posts/{post}/like', [PostController::class, 'like'])->name('posts.like');
 
-    Route::resource('posts', PostController::class)->except(['index', 'show']);;
+    Route::get('/my-posts', [PostController::class, 'myPosts'])->name('posts.my');
+    Route::resource('posts', PostController::class)->except(['index', 'show']);
     Route::resource('posts.comments', CommentController::class)->shallow()->except(['index', 'show']);
 
     Route::resource('categories', CategoryController::class)->middleware('role:admin');
     Route::resource('tags', TagController::class)->middleware('role:admin');
     Route::resource('users', UserController::class);
-
-    
 });
 
 
@@ -69,15 +72,13 @@ Route::get('posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
 
 Route::middleware('auth')->group(function () {
-    
+
     Route::get('/roles/{role}/assign-permissions', [RoleController::class, 'assignPermissions'])->name('roles.assign.permissions');
     Route::put('/roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.permissions.update');
     Route::resource('roles', RoleController::class);
 
     // Permissions CRUD routes
     Route::resource('permissions', PermissionController::class);
-
-
 });
 
 
@@ -90,4 +91,10 @@ Route::post('/contact', [InfoController::class, 'submitContact'])->name('contact
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/contact-submissions', [InfoController::class, 'show_contact_submissions'])->name('show.contact-submissions');
+});
+
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/artisan', [MyArtisanController::class, 'index'])->name('artisan.index');
+    Route::post('/artisan/run', [MyArtisanController::class, 'run'])->name('artisan.run');
 });

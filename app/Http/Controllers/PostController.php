@@ -27,7 +27,7 @@ class PostController extends Controller
     public function index()
     {
 
-        $posts = Post::with(['category', 'tags', 'user'])->latest()->paginate(12);
+        $posts = Post::with(['category', 'tags', 'user'])->inRandomOrder()->paginate(12);
         $categories = Category::all(); // Fetch categories
         $tags = Tag::all();
         return view('posts.index', compact('posts', 'categories', 'tags'));
@@ -63,7 +63,17 @@ class PostController extends Controller
         return view('posts.index', compact('posts', 'tags', 'categories'));
     }
 
+    public function indexByUserPostsTag(Tag $tag)
+    {
+        $user = Auth::user();
+        $posts = $user->posts()->whereHas('tags', function ($query) use ($tag) {
+            $query->where('tags.id', $tag->id);
+        })->with(['category', 'tags', 'user'])->latest()->paginate(12);
 
+        $tags = Tag::all();
+        $categories = Category::all();
+        return view('posts.my-posts', compact('posts', 'tags', 'categories'));
+    }
     //filter only by category
     public function category(Category $category)
     {
@@ -73,6 +83,17 @@ class PostController extends Controller
         return view('posts.index', compact('posts', 'categories', 'tags'));
     }
 
+    public function userPostsCategory(Category $category)
+    {
+        $user = Auth::user();
+
+        $posts = $user->posts()->where('category_id', $category->id)->with(['category', 'tags', 'user'])->latest()->paginate(12);
+
+        $categories = Category::all(); // Retrieve categories (optional)
+        $tags = Tag::all(); // Retrieve tags (optional)
+
+        return view('posts.my-posts', compact('posts', 'categories', 'tags'));
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -259,5 +280,17 @@ class PostController extends Controller
         $followedUsers = Auth::user()->follows()->pluck('followed_id');
         $posts = Post::whereIn('user_id', $followedUsers)->get();
         return view('posts.followed', compact('posts'));
+    }
+
+    public function myPosts()
+    {
+        $user = auth()->user();
+        $posts = Post::where('user_id', $user->id)
+            ->with(['category', 'tags', 'user'])
+            ->latest()
+            ->paginate(12);
+        $categories = Category::all(); // Fetch categories
+        $tags = Tag::all();
+        return view('posts.my-posts',  compact('posts', 'categories', 'tags'));
     }
 }

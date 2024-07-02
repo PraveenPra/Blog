@@ -1,6 +1,6 @@
 <x-master-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight dark:text-white">
             {{ __('Users') }}
         </h2>
     </x-slot>
@@ -9,9 +9,9 @@
         <h1 class="text-2xl font-bold mb-4">Users</h1>
         <a href="{{ route('users.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">Create User</a>
         <div class="overflow-x-auto">
-            <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+            <table class="min-w-full bg-white  rounded-lg shadow-md">
                 <thead>
-                    <tr class="bg-gray-100 border-b">
+                    <tr class="bg-gray-100 border-b dark:bg-gray-800 dark:text-white">
                         <th class="py-3 px-6 text-left">ID</th>
                         <th class="py-3 px-6 text-left">Name</th>
                         <th class="py-3 px-6 text-left">Email</th>
@@ -20,20 +20,20 @@
                 </thead>
                 <tbody>
                     @foreach($users as $user)
-                        <tr class="hover:bg-gray-50 border-b">
-                            <td class="py-3 px-6">{{ $user->id }}</td>
-                            <td class="py-3 px-6">{{ $user->name }}</td>
-                            <td class="py-3 px-6">{{ $user->email }}</td>
-                            <td class="py-3 px-6">
-                                <a href="{{ route('users.show', $user) }}" class="bg-indigo-500 text-white px-4 py-2 rounded inline-block">View</a>
-                                <a href="{{ route('users.edit', $user) }}" class="bg-yellow-500 text-white px-4 py-2 rounded inline-block">Edit</a>
-                                <form action="{{ route('users.destroy', $user) }}" method="POST" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded inline-block">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
+                    <tr class="hover:bg-gray-50 border-b  dark:bg-gray-800 dark:text-white">
+                        <td class="py-3 px-6">{{ $user->id }}</td>
+                        <td class="py-3 px-6">{{ $user->name }}</td>
+                        <td class="py-3 px-6">{{ $user->email }}</td>
+                        <td class="py-3 px-6">
+                            <a href="{{ route('users.show', $user) }}" class="bg-indigo-500 text-white px-4 py-2 rounded inline-block">View</a>
+                            <a href="{{ route('users.edit', $user) }}" class="bg-yellow-500 text-white px-4 py-2 rounded inline-block">Edit</a>
+                            <form action="{{ route('users.destroy', $user) }}" method="POST" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded inline-block">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
